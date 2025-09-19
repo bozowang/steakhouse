@@ -1,712 +1,1473 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>無名牛排 - 手機版</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #8B4513;
-            --secondary: #D2691E;
-            --accent: #FF6B6B;
-            --light: #FFF8DC;
-            --dark: #4A2C2A;
-            --chocolate: #7B3F00;
-            --bianco: #fff;
-            --nero: #000;
-            --colore-uno: #f7f6f5;
-            --colore-due: #bcb5b1;
-            --colore-tre: #77726c;
-            --colore-quattro: #202123;
-            --colore-cinque: #cb334f;
-            --colore-sei: #9CA998;
-            --colore-sette: #67876a;
-            --colore-otto: #fdc334;
-            --colore-nove: #821427;
-        }
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>無名牛排</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    :root {
+        --primary: #8B4513;
+        --secondary: #D2691E;
+        --accent: #FF6B6B;
+        --light: #FFF8DC;
+        --dark: #4A2C2A;
+        --success: #28a745;
+        --warning: #ffc107;
+        --info: #17a2b8;
+        --chocolate: #7B3F00;
+        --bianco: #fff;
+        --nero: #000;
+        --colore-uno: #f7f6f5;
+        --colore-due: #bcb5b1;
+        --colore-tre: #77726c;
+        --colore-quattro: #202123;
+        --colore-cinque: #cb334f;
+        --colore-sei: #9CA998;
+        --colore-sette: #67876a;
+        --colore-otto: #fdc334;
+        --colore-nove: #821427;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    html {
+        scroll-behavior: smooth;
+        height: 100%;
+    }
 
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--colore-quattro);
-            background-color: var(--colore-uno);
-            overflow-x: hidden;
-        }
+    body {
+        margin: 0;
+        padding: 0;
+        color: var(--colore-quattro);
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+        min-height: 100vh;
+        position: relative;
+    }
 
-        /* 顶部导航 */
-        .mobile-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--colore-quattro);
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
+    h1, h2, h3, h4, h5 {
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 600;
+    }
 
-        .mobile-logo {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
 
-        .hamburger-menu {
-            color: white;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+    /* 加载指示器 - 手机适配 */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10001;
+        color: white;
+        transition: opacity 0.5s ease-in-out;
+    }
 
-        /* 移动导航菜单 */
-        .mobile-nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 80%;
-            height: 100%;
-            background-color: var(--colore-quattro);
-            z-index: 1001;
-            padding: 60px 20px 20px;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-        }
+    .spinner {
+        border: 6px solid rgba(255, 255, 255, 0.3);
+        border-top: 6px solid var(--accent);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1.5s linear infinite;
+        margin-bottom: 15px;
+    }
 
-        .mobile-nav.active {
-            right: 0;
-        }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 
-        .close-menu {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            color: white;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+    /* 全屏提示层 - 手机适配 */
+    .fullscreen-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        backdrop-filter: blur(3px);
+        padding: 0 20px;
+    }
 
-        .mobile-nav ul {
-            list-style: none;
-        }
+    .fullscreen-button {
+        padding: 12px 25px;
+        background: #ff6600;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+    }
 
-        .mobile-nav li {
-            margin-bottom: 15px;
-        }
+    .fullscreen-button:hover {
+        background: #ff8833;
+        transform: scale(1.05);
+    }
 
-        .mobile-nav a {
-            color: var(--colore-due);
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: block;
-            padding: 10px 0;
-            transition: color 0.3s;
-        }
+    /* 警告弹窗 - 手机适配 */
+    .violation-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        color: white;
+        backdrop-filter: blur(3px);
+        padding: 0 15px;
+    }
 
-        .mobile-nav a:hover {
-            color: white;
-        }
+    .violation-content {
+        background: #2a2a40;
+        padding: 30px 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        max-width: 90%;
+        border: 2px solid #ff6600;
+        animation: modal-bounce 0.8s ease-in-out;
+    }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
+    .violation-content h2 {
+        font-size: 1.5rem;
+        color: #ff6600;
+        margin-bottom: 15px;
+        text-align: center;
+    }
 
-        .overlay.active {
-            display: block;
-        }
+    .violation-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        text-align: center;
+    }
 
-        /* 主内容区域 */
-        .main-content {
-            margin-top: 60px;
-            padding: 20px;
-        }
+    .violation-close-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        background: #ff6600;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: block;
+        margin: 0 auto;
+    }
 
-        /* 幻灯片容器 */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            margin-bottom: 25px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
+    .violation-close-button:hover {
+        background: #ff8833;
+        transform: scale(1.05);
+    }
 
-        .slider {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.4s ease;
-        }
+    @keyframes modal-bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        60% { transform: translateY(-10px); }
+    }
 
-        .slide {
-            min-width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 20px;
-            color: white;
-            position: relative;
-        }
+    /* 视频背景 - 手机优化（静态背景避免性能问题） */
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        overflow: hidden;
+        background: url('https://picsum.photos/id/1060/1080/1920') center center no-repeat;
+        background-size: cover;
+    }
 
-        .slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
-            z-index: 1;
-        }
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(10, 10, 42, 0.75);
+    }
 
-        .slide-content {
-            position: relative;
-            z-index: 2;
-        }
+    /* 视频控制按钮 - 手机简化 */
+    .video-controls {
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        z-index: 100;
+        display: flex;
+        gap: 8px;
+    }
 
-        .slide-title {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-        }
+    .video-controls button {
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
 
-        .slide-description {
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            max-height: 60px;
-            overflow: hidden;
-        }
+    .video-controls button:hover {
+        background: rgba(0, 0, 0, 0.9);
+    }
 
-        .slider-controls {
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 3;
-        }
+    /* 内容保护徽章 - 手机适配 */
+    .protection-badge {
+        position: fixed;
+        bottom: 15px;
+        left: 15px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 100;
+        backdrop-filter: blur(3px);
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
 
-        .slider-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+    .protection-badge:hover {
+        opacity: 1;
+    }
 
-        .slider-dot.active {
-            background-color: white;
-            transform: scale(1.2);
-        }
+    /* 容器样式 - 手机全屏适配 */
+    .container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 15px;
+        width: calc(100% - 30px);
+    }
 
-        .slider-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background-color: rgba(0, 0, 0, 0.4);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 3;
-            transition: background-color 0.3s;
-        }
+    /* 顶部导航 - 手机专用汉堡菜单 */
+    header {
+        background-color: var(--colore-quattro);
+        padding: 12px 15px;
+        position: fixed;
+        width: 100vw;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
 
-        .slider-nav:hover {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
+    header.hidden {
+        transform: translateY(-100%);
+    }
 
-        .slider-nav.prev {
-            left: 10px;
-        }
+    .logo {
+        width: 180px;
+    }
 
-        .slider-nav.next {
-            right: 10px;
-        }
+    .logo img {
+        width: 100%;
+        height: auto;
+        content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50"><text x="0" y="30" font-family="Bodoni Moda" font-size="24" fill="white">無名牛排</text></svg>');
+    }
 
-        /* 内容区块 */
-        .content-block {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    /* 移动端汉堡菜单 */
+    .hidden-menu-btn {
+        display: block;
+        color: white;
+        font-size: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+    }
 
+    .hidden-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .hidden-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .hidden-menu {
+        position: fixed;
+        top: 0;
+        right: -80%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--colore-quattro);
+        z-index: 1000;
+        padding: 70px 20px 20px;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .hidden-menu.active {
+        right: 0;
+    }
+
+    .hidden-menu-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: white;
+        font-size: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .hidden-menu-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .hidden-menu-nav li {
+        margin-bottom: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 8px;
+    }
+
+    .hidden-menu-nav a {
+        color: var(--colore-due);
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.3s;
+        display: block;
+        padding: 5px 0;
+    }
+
+    .hidden-menu-nav a:hover {
+        color: var(--bianco);
+        padding-left: 5px;
+    }
+
+    .hidden-menu-social {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .hidden-menu-social a {
+        color: var(--colore-due);
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .hidden-menu-social a:hover {
+        color: var(--bianco);
+    }
+
+    .language-switcher {
+        color: var(--colore-due);
+        font-size: 14px;
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .language-switcher span {
+        margin: 0 8px;
+        cursor: pointer;
+    }
+
+    .language-switcher span.active {
+        color: var(--bianco);
+        font-weight: 500;
+    }
+
+    .book-btn {
+        background-color: var(--colore-cinque);
+        color: white;
+        padding: 8px 20px;
+        text-decoration: none;
+        font-size: 14px;
+        letter-spacing: 1px;
+        font-weight: 600;
+        transition: background-color 0.3s;
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    .book-btn:hover {
+        background-color: var(--colore-nove);
+    }
+
+    /* 首页轮播 - 手机优化 */
+    .hero-slider {
+        height: 80vh;
+        min-height: 400px;
+        position: relative;
+        margin-top: 60px;
+    }
+
+    .slide {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 1s ease;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .slide-1 {
+        background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/id/1080/800/1200');
+    }
+
+    .slide-2 {
+        background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/id/488/800/1200');
+    }
+
+    .slide-3 {
+        background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/id/326/800/1200');
+    }
+
+    .hero-content {
+        text-align: center;
+        color: white;
+        max-width: 90%;
+        padding: 0 15px;
+        z-index: 10;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+
+    /* 轮播控制按钮 - 手机触控优化 */
+    .hero-slider-controls {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        z-index: 10;
+    }
+
+    .hero-slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .hero-slider-dot.active {
+        background-color: var(--bianco);
+        transform: scale(1.2);
+    }
+
+    /* 内容区块 - 手机垂直布局 */
+    .content-section {
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        width: 100vw;
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .dark-bg {
+        background-color: rgba(32, 33, 35, 0.95);
+        color: var(--colore-due);
+    }
+
+    .light-bg {
+        background-color: rgba(247, 246, 245, 0.95);
+        color: var(--colore-quattro);
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+    }
+
+    .section-text {
+        max-width: 100%;
+        margin: 0 auto 30px;
+        font-size: 1rem;
+        line-height: 1.7;
+        padding: 0 10px;
+    }
+
+    /* 混合布局区块 - 手机垂直堆叠 */
+    .mixed-layout {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 10;
+        width: 100vw;
+    }
+
+    .fixed-half, .slider-half {
+        width: 100vw;
+        height: 50vh;
+        min-height: 300px;
+    }
+
+    .fixed-half {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .slider-half {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slider-half-inner {
+        display: flex;
+        transition: transform 0.5s ease;
+        height: 100%;
+    }
+
+    .slider-slide {
+        min-width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .slider-controls {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .slider-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background-color 0.3s;
+        z-index: 10;
+    }
+
+    .slider-dot.active {
+        background-color: var(--bianco);
+        transform: scale(1.2);
+    }
+
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s;
+    }
+
+    .slider-arrow:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .slider-arrow.prev {
+        left: 15px;
+    }
+
+    .slider-arrow.next {
+        right: 15px;
+    }
+
+    /* 第二区块（左固定，右轮播） */
+    .second-section .fixed-half {
+        background-image: url('https://picsum.photos/id/429/800/1200');
+    }
+
+    .second-section .slider-slide-1 {
+        background-image: url('https://picsum.photos/id/431/800/1200');
+    }
+
+    .second-section .slider-slide-2 {
+        background-image: url('https://picsum.photos/id/433/800/1200');
+    }
+
+    .second-section .slider-slide-3 {
+        background-image: url('https://picsum.photos/id/435/800/1200');
+    }
+
+    /* 第三区块（左轮播，右固定） */
+    .third-section .fixed-half {
+        background-image: url('https://picsum.photos/id/488/800/1200');
+    }
+
+    .third-section .slider-slide-1 {
+        background-image: url('https://picsum.photos/id/493/800/1200');
+    }
+
+    .third-section .slider-slide-2 {
+        background-image: url('https://picsum.photos/id/495/800/1200');
+    }
+
+    .third-section .slider-slide-3 {
+        background-image: url('https://picsum.photos/id/497/800/1200');
+    }
+
+    /* 菜单区块 - 手机单列布局 */
+    .menu-section {
+        padding: 60px 0;
+        background-color: rgba(247, 246, 245, 0.95);
+        position: relative;
+        z-index: 10;
+        width: 100vw;
+    }
+
+    .menu-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 15px;
+        width: calc(100% - 30px);
+    }
+
+    .menu-category {
+        margin-bottom: 50px;
+    }
+
+    .menu-category-title {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+        text-align: center;
+        color: var(--colore-quattro);
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .menu-category-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background-color: var(--colore-cinque);
+    }
+
+    .menu-items {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .menu-item {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .menu-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .menu-item-image {
+        height: 180px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .menu-item-content {
+        padding: 18px;
+    }
+
+    .menu-item-title {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+        color: var(--colore-quattro);
+    }
+
+    .menu-item-description {
+        color: var(--colore-tre);
+        margin-bottom: 12px;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .menu-item-link {
+        display: inline-block;
+        color: var(--colore-cinque);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        font-size: 0.95rem;
+    }
+
+    .menu-item-link:hover {
+        color: var(--colore-nove);
+        text-decoration: underline;
+    }
+
+    /* 门店信息区块 - 手机垂直布局 */
+    .store-info-section {
+        padding: 60px 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        position: relative;
+        z-index: 10;
+        width: 100vw;
+    }
+
+    .store-info-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        width: calc(100% - 30px);
+    }
+
+    .store-info-left, .store-info-right {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .store-info-right {
+        height: 300px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .store-info-title {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+        color: var(--colore-quattro);
+        position: relative;
+        padding-bottom: 12px;
+        display: inline-block;
+    }
+
+    .store-info-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background-color: var(--colore-cinque);
+    }
+
+    .info-card {
+        background-color: var(--colore-uno);
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card h4 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: var(--colore-quattro);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-card h4 i {
+        color: var(--colore-cinque);
+        font-size: 1.1rem;
+        width: 20px;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .info-list li {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: var(--colore-tre);
+        font-size: 0.95rem;
+    }
+
+    .info-list li i {
+        color: var(--colore-sette);
+        margin-top: 5px;
+        flex-shrink: 0;
+        width: 16px;
+    }
+
+    .delivery-btn {
+        display: inline-block;
+        background-color: var(--colore-cinque);
+        color: var(--bianco);
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 5px;
+        transition: background-color 0.3s;
+        font-size: 0.95rem;
+    }
+
+    .delivery-btn:hover {
+        background-color: var(--colore-nove);
+    }
+
+    .map-embed {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* 美食画廊 - 手机单列布局 */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .gallery-item {
+        height: 300px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.02);
+    }
+
+    .gallery-item-1 {
+        background-image: url('https://picsum.photos/id/292/800/1200');
+    }
+
+    .gallery-item-2 {
+        background-image: url('https://picsum.photos/id/312/800/1200');
+    }
+
+    .gallery-item-3 {
+        background-image: url('https://picsum.photos/id/314/800/1200');
+    }
+
+    .gallery-item-4 {
+        background-image: url('https://picsum.photos/id/365/800/1200');
+    }
+
+    /* 图片查看器样式 */
+    body {
+        text-align: center;
+        margin-top: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* 缩略图 */
+    .thumbnail {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        margin: 20px auto;
+        display: block;
+    }
+    .thumbnail:hover {
+        transform: scale(1.05);
+    }
+
+    /* 全屏遮罩（默认隐藏） */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* 放大的图片（居中最大化） */
+    .overlay img {
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* 点击关闭提示 */
+    .overlay::after {
+        content: "點擊任意處關閉";
+        position: absolute;
+        bottom: 30px;
+        color: #ccc;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    /* 页脚 - 手机适配 */
+    footer {
+        background-color: rgba(247, 246, 245, 0.95);
+        padding: 60px 0 30px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        width: 100vw;
+    }
+
+    .footer-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        letter-spacing: 3px;
+        color: var(--colore-tre);
+    }
+
+    .footer-address {
+        margin-bottom: 25px;
+        color: var(--colore-tre);
+        font-size: 0.95rem;
+        padding: 0 15px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        padding: 0;
+    }
+
+    .social-link {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--colore-tre);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .social-link:hover {
+        background-color: var(--colore-cinque);
+    }
+
+    .footer-logo {
+        width: 150px;
+        margin: 25px auto;
+    }
+
+    .copyright {
+        color: var(--colore-tre);
+        font-size: 0.85rem;
+        margin-top: 25px;
+        padding: 0 15px;
+    }
+
+    /* 全屏模式特殊样式 */
+    :-webkit-full-screen {
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    :fullscreen {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    /* 适配极小屏幕 */
+    @media (max-width: 360px) {
+        .hero-content h1 {
+            font-size: 1.7rem;
+        }
+        
         .section-title {
             font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--colore-quattro);
-            border-bottom: 2px solid var(--colore-cinque);
-            padding-bottom: 10px;
         }
-
-        /* 菜单项目 */
-        .menu-items {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        .menu-item {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
+        
         .menu-item-image {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
+            height: 150px;
         }
-
-        .menu-item-content {
-            padding: 15px;
-        }
-
-        .menu-item-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--colore-quattro);
-        }
-
-        .menu-item-description {
-            color: var(--colore-tre);
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .menu-item-link {
-            display: inline-block;
-            color: var(--colore-cinque);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* 门店信息 */
-        .info-card {
-            background-color: var(--colore-uno);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .info-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--colore-quattro);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-list {
-            list-style: none;
-        }
-
-        .info-list li {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .info-list i {
-            color: var(--colore-sette);
-            margin-top: 5px;
-            flex-shrink: 0;
-        }
-
-        .delivery-btn {
-            display: inline-block;
-            background-color: var(--colore-cinque);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 15px;
-            font-weight: 500;
-        }
-
-        /* 地图 */
-        .map-container {
-            height: 300px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .map-embed {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* 画廊 */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
+        
         .gallery-item {
             height: 250px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 8px;
         }
-
-        /* 页脚 */
-        footer {
-            background-color: var(--colore-quattro);
-            color: var(--colore-due);
-            padding: 30px 20px;
-            text-align: center;
+        
+        .store-info-right {
+            height: 250px;
         }
-
-        .footer-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: white;
-        }
-
-        .footer-address {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--colore-tre);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .social-link:hover {
-            background-color: var(--colore-cinque);
-        }
-
-        .copyright {
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-
-        /* 图片放大功能 */
-        .thumbnail {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .image-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1002;
-            display: none;
-        }
-
-        .image-overlay.active {
-            display: flex;
-        }
-
-        .enlarged-image {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 8px;
-        }
-
-        .close-overlay {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* 加载动画 */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--colore-quattro);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loading.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--colore-cinque);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* 响应式调整 */
-        @media (min-width: 768px) {
-            .menu-items {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .slider-container {
-                height: 400px;
-            }
-            
-            .slide-title {
-                font-size: 1.8rem;
-            }
-            
-            .slide-description {
-                font-size: 1.1rem;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <!-- 加载动画 -->
-    <div class="loading" id="loading">
+
+    <!-- 加载指示器 -->
+    <div class="loading-overlay" id="loading-overlay">
         <div class="spinner"></div>
+        <p>牛排美味加載中...</p>
     </div>
 
-    <!-- 移动端头部 -->
-    <div class="mobile-header">
-        <div class="mobile-logo">無名牛排</div>
-        <button class="hamburger-menu" id="menuToggle">
-            <i class="fas fa-bars"></i>
+    <!-- 全屏提示层 -->
+    <div class="fullscreen-overlay" id="fullscreen-overlay">
+        <p>進入全屏模式，體驗更佳視覺效果</p>
+        <button class="fullscreen-button" id="fullscreen-button">進入全螢幕</button>
+    </div>
+
+    <!-- 警告弹窗 -->
+    <div class="violation-modal" id="violation-modal">
+        <div class="violation-content">
+            <h2><i class="fas fa-exclamation-circle"></i></h2>
+            <p></p>
+            <button class="violation-close-button" id="violation-close-button">確定</button>
+        </div>
+    </div>
+
+    <!-- 视频背景 -->
+    <div class="video-background">
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- 视频控制按钮 -->
+    <div class="video-controls">
+        <button id="mute-toggle" title="靜音/取消靜音">
+            <i class="fas fa-volume-mute"></i>
+        </button>
+        <button id="pause-play" title="暫停/播放">
+            <i class="fas fa-pause"></i>
         </button>
     </div>
 
-    <!-- 移动导航菜单 -->
-    <div class="mobile-nav" id="mobileNav">
-        <button class="close-menu" id="closeMenu">
+    <!-- 内容保护徽章 -->
+    <div class="protection-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>內容保護已啟用</span>
+    </div>
+
+    <!-- 隐藏菜单遮罩 -->
+    <div class="hidden-menu-overlay" id="menuOverlay"></div>
+    
+    <!-- 隐藏菜单 -->
+    <div class="hidden-menu" id="hiddenMenu">
+        <button class="hidden-menu-close" id="menuClose">
             <i class="fas fa-times"></i>
         </button>
-        <ul>
-            <li><a href="#home">首頁</a></li>
-            <li><a href="#about">關於我們</a></li>
-            <li><a href="#menu">菜單</a></li>
-            <li><a href="#store-info">門市資訊</a></li>
-            <li><a href="#gallery">美食畫廊</a></li>
-            <li><a href="#reservations">線上預訂</a></li>
-            <li><a href="#contact">聯絡我們</a></li>
-        </ul>
+        
+        <nav class="hidden-menu-nav">
+            <ul>
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#about">關於我們</a></li>
+                <li><a href="#menu">菜單</a></li>
+                <li><a href="#store-info">門市資訊</a></li>
+                <li><a href="#gallery">美食畫廊</a></li>
+                <li><a href="#reservations">線上預訂</a></li>
+                <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+        </nav>
+        
+        <div class="language-switcher">
+            <span class="active">中文</span> | <span>ENG</span>
+        </div>
+        
+        <a href="#reservations" class="book-btn">立即預訂</a>
+        
+        <div class="hidden-menu-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tripadvisor"></i></a>
+        </div>
     </div>
 
-    <!-- 菜单遮罩层 -->
-    <div class="overlay" id="overlay"></div>
+    <!-- 页首 -->
+    <header id="mainHeader">
+        <div class="logo">
+            <img src="logo.png" alt="無名牛排 - 平價大碗牛排專門店">
+        </div>
+        
+        <button class="hidden-menu-btn" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
 
-    <!-- 主内容区域 -->
-    <div class="main-content">
-        <!-- 幻灯片区域 -->
-        <div class="slider-container" id="slider">
-            <div class="slider">
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                    <div class="slide-content">
-                        <h3 class="slide-title">無名牛排</h3>
-                        <p class="slide-description">堅持「厚切現煎、分量扎實」，讓每個人都能以親民價格，吃到飽足又滿意的好牛排</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                    <div class="slide-content">
-                        <h3 class="slide-title">實在用料 真心價格</h3>
-                        <p class="slide-description">不玩花俏包裝，只把成本用在食材上，每份牛排份量比同價位多30%，讓你吃飽又吃好</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                    <div class="slide-content">
-                        <h3 class="slide-title">街坊食堂的溫暖</h3>
-                        <p class="slide-description">不論是家庭聚餐、朋友小聚還是獨食小酌，都能在這裡找到高CP值的美味體驗</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1607116667981-ff4b72a5d5c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                    <div class="slide-content">
-                        <h3 class="slide-title">精選食材</h3>
-                        <p class="slide-description">嚴選優質肉品，用心烹調每一道料理，呈現最完美的口感與風味</p>
-                    </div>
-                </div>
+    <!-- 首页轮播 -->
+    <section class="hero-slider" id="home">
+        <div class="slide slide-1 active">
+            <div class="hero-content">
+                <h1>無名牛排</h1>
+                <p>堅持「厚切現煎、分量扎實」，讓每個人都能以親民價格，吃到飽足又滿意的好牛排</p>
             </div>
-            
-            <button class="slider-nav prev">
+        </div>
+        
+        <div class="slide slide-2">
+            <div class="hero-content">
+                <h1>實在用料 真心價格</h1>
+                <p>不玩花俏包裝，只把成本用在食材上，每份牛排份量比同價位多30%，讓你吃飽又吃好</p>
+            </div>
+        </div>
+        
+        <div class="slide slide-3">
+            <div class="hero-content">
+                <h1>街坊食堂的溫暖</h1>
+                <p>不論是家庭聚餐、朋友小聚還是獨食小酌，都能在這裡找到高CP值的美味體驗</p>
+            </div>
+        </div>
+        
+        <!-- 轮播控制器 -->
+        <div class="hero-slider-controls">
+            <div class="hero-slider-dot active" data-slide="0"></div>
+            <div class="hero-slider-dot" data-slide="1"></div>
+            <div class="hero-slider-dot" data-slide="2"></div>
+        </div>
+    </section>
+
+    <!-- 品牌故事区 -->
+    <section class="content-section dark-bg" id="about">
+        <div class="container">
+            <h2 class="section-title">我們的堅持：讓好牛排走進生活</h2>
+            <p class="section-text">
+                「無名牛排」從一間社區小店面起家，始終堅信「美味不該昂貴」。我們不販賣奢華環境，只專注兩件事：一是牛排要「厚切現煎」，確保肉質鮮嫩多汁；二是價格要「親民實在」，讓學生、上班族、家庭客都能輕鬆消費。「平價大碗」從來不是偷工減料的代名詞，而是對食材的誠懇——用合理的利潤，換來顧客的回流與信賴。
+            </p>
+        </div>
+    </section>
+
+    <!-- 第二区块（左固定，右轮播） -->
+    <section class="mixed-layout second-section">
+        <div class="fixed-half"></div>
+        <div class="slider-half">
+            <div class="slider-half-inner">
+                <div class="slider-slide slider-slide-1"></div>
+                <div class="slider-slide slider-slide-2"></div>
+                <div class="slider-slide slider-slide-3"></div>
+            </div>
+            <div class="slider-arrow prev">
                 <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="slider-nav next">
+            </div>
+            <div class="slider-arrow next">
                 <i class="fas fa-chevron-right"></i>
-            </button>
-            
+            </div>
             <div class="slider-controls">
                 <div class="slider-dot active"></div>
                 <div class="slider-dot"></div>
                 <div class="slider-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌理念区 -->
+    <section class="content-section light-bg">
+        <div class="container">
+            <h2 class="section-title">每塊牛排，都是對生活的誠意</h2>
+            <p class="section-text">
+                我們挑選的每塊牛肉，都經過主廚親手挑選——不追求名貴產地，但堅持新鮮直送、現點現煎。餐盤裡的配菜、醬料，不是裝飾，而是讓牛排更美味的配角：自製黑胡椒醬濃郁不膩，現炸薯條外酥內軟，玉米筍脆嫩多汁。在無名牛排，「大碗」不僅是分量，更是對生活的熱情；「平價」不僅是價格，更是讓美味平等的態度。我們相信，好味道不需要靠昂貴撐場，用心做好每一份餐點，就是對顧客最好的回饋。
+            </p>
+        </div>
+    </section>
+
+    <!-- 第三区块（左轮播，右固定） -->
+    <section class="mixed-layout third-section">
+        <div class="slider-half">
+            <div class="slider-half-inner">
+                <div class="slider-slide slider-slide-1"></div>
+                <div class="slider-slide slider-slide-2"></div>
+                <div class="slider-slide slider-slide-3"></div>
+            </div>
+            <div class="slider-arrow prev">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="slider-arrow next">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="slider-controls">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
                 <div class="slider-dot"></div>
             </div>
         </div>
+        <div class="fixed-half"></div>
+    </section>
 
-        <!-- 品牌故事 -->
-        <section class="content-block" id="about">
-            <h2 class="section-title">我們的堅持：讓好牛排走進生活</h2>
-            <p>「無名牛排」從一間社區小店面起家，始終堅信「美味不該昂貴」。我們不販賣奢華環境，只專注兩件事：一是牛排要「厚切現煎」，確保肉質鮮嫩多汁；二是價格要「親民實在」，讓學生、上班族、家庭客都能輕鬆消費。「平價大碗」從來不是偷工減料的代名詞，而是對食材的誠懇——用合理的利潤，換來顧客的回流與信賴。</p>
-        </section>
-
-        <!-- 菜单区域 -->
-        <section class="content-block" id="menu">
+    <!-- 菜单区 -->
+    <section class="menu-section" id="menu">
+        <div class="menu-container">
             <h2 class="section-title">高CP值是日菜單懶人包</h2>
             
-            <h3 style="margin: 20px 0 15px; color: var(--colore-quattro);">海鮮類</h3>
-            <div class="menu-items">
-                <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1551504734-b464e32a163a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                    <div class="menu-item-content">
-                        <h4 class="menu-item-title">香煎鱸魚</h4>
-                        <p class="menu-item-description">每日新鮮直送鱸魚，煎至外皮金脆，肉質細嫩不柴，分量足夠一人飽食，搭配自選兩種季節配菜，價格親民不打折。</p>
-                        <a href="https://bullinblack.blogspot.com/2024/12/a.html" class="menu-item-link" target="_blank">查看詳細介紹 →</a>
+            <h1>點圖片 → 全螢幕放大</h1>
+
+            <!-- 小縮圖 -->
+            <img src="https://picsum.photos/id/488/800/1200" class="thumbnail" alt="牛排縮圖" onclick="openImage(this.src)">
+
+            <!-- 全螢幕放大容器 -->
+            <div class="overlay" id="overlay" onclick="closeImage()">
+                <img id="bigImage" src="" alt="放大圖">
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">海鮮類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/614/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎鱸魚</h4>
+                            <p class="menu-item-description">
+							每日新鮮直送鱸魚，煎至外皮金脆，肉質細嫩不柴，分量足夠一人飽食，搭配自選兩種季節配菜，價格親民不打折。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/a.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <h3 style="margin: 20px 0 15px; color: var(--colore-quattro);">豬肉類</h3>
-            <div class="menu-items">
-                <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                    <div class="menu-item-content">
-                        <h4 class="menu-item-title">日式炸豬排</h4>
-                        <p class="menu-item-description">豬里肌，裹上手工麵包糠酥炸，外皮酥脆不油膩，內層肉汁滿溢，搭配特製豬排醬。</p>
-                        <a href="https://bullinblack.blogspot.com/2024/12/1_11.html" class="menu-item-link" target="_blank">查看詳細介紹 →</a>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">豬肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/231/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">日式炸豬排</h4>
+                            <p class="menu-item-description">
+							豬里肌，裹上手工麵包糠酥炸，外皮酥脆不油膩，內層肉汁滿溢，搭配特製豬排醬。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/1_11.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
                     </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/237/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎豬排</h4>
+                            <p class="menu-item-description">
+							選用油脂分布均勻的梅花豬，簡單調味凸顯肉香，煎至邊緣微焦，肉質軟嫩不柴，分量比同價位多20%。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_14.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/239/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">德國烤豬腳</h4>
+                            <p class="menu-item-description">
+							整隻豬腳先醃後烤，外皮Q彈帶脆，內部肉質酥爛脫骨。</p>
+                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/2954550997423569543" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">雞肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/241/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎去骨雞腿</h4>
+                            <p class="menu-item-description">
+							整塊去骨雞腿肉，用香料醃製6小時以上，煎至外皮金黃，肉質多汁不柴。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/1_17.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">牛排類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/488/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">NZ菲力牛排</h4>
+                            <p class="menu-item-description">
+							選用紐西蘭草飼牛菲力，2公分厚切確保嫩度，脂肪含量低，適合喜歡清爽口感的顧客，附自製黑胡椒醬和雙配菜。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_31.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/493/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">超值板腱牛排</h4>
+                            <p class="menu-item-description">
+							CP值之王！取自牛肩胛部位，中間帶筋，肉質結實有嚼勁，油花分布均勻，分量十足，學生族群最愛。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_17.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/497/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">經典NZ上蓋牛排</h4>
+                            <p class="menu-item-description">
+							肋眼上蓋肉，大理石紋油花豐富，煎烤後肉汁滿溢，風味濃郁，附兩種配菜，性價比超高。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">鴨肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('https://picsum.photos/id/501/800/1200');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎櫻桃鴨胸</h4>
+                            <p class="menu-item-description">
+							選用宜蘭櫻桃鴨胸，皮煎至酥脆，肉質鮮嫩不柴，脂肪分布均勻，搭配橙醬解膩，分量扎實，性價比高。</p>
+                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/5962579112663121162" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 门店信息区块 -->
+    <section class="store-info-section" id="store-info">
+        <div class="store-info-container">
+            <div class="store-info-left">
+                <h3 class="store-info-title">門市資訊 &amp; 外送服務</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-store"></i> 門市基本資訊</h4>
+                    <ul class="info-list">
+                        <li><i class="fas fa-map-pin"></i> <strong>地址：</strong>台北市南港區南港路一段57號（近南港捷運站2號出口，步行3分鐘）</li>
+                        <li><i class="fas fa-clock"></i> <strong>營業時間：</strong>週一至週日(公休日粉專會提前公告(用餐前請先確認有無店休)<br>
+                            11:30-21:30（全日供應中間沒有休息；20:30以後只提供外帶/外送）</li>
+                    </ul>
                 </div>
                 
-                <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                    <div class="menu-item-content">
-                        <h4 class="menu-item-title">香煎豬排</h4>
-                        <p class="menu-item-description">選用油脂分布均勻的梅花豬，簡單調味凸顯肉香，煎至邊緣微焦，肉質軟嫩不柴，分量比同價位多20%。</p>
-                        <a href="https://bullinblack.blogspot.com/2024/12/blog-post_14.html" class="menu-item-link" target="_blank">查看詳細介紹 →</a>
-                    </div>
+                <div class="info-card">
+                    <h4><i class="fas fa-motorcycle"></i> 外送外帶服務</h4>
+                    <ul class="info-list">
+                        <li><i class="fas fa-check"></i> <strong>外送平台：</strong>Uber Eats、Foodpanda、lalamove需自行找外送平台</li>
+                        <li><i class="fas fa-check"></i> <strong>外送時間：</strong>與門市營業時間同步，外送範圍3公里內</li>
+                        <li><i class="fas fa-check"></i> <strong>包裝說明：</strong>牛排採用保溫盒包裝，附醬料分裝，確保口感不流失</li>
+                    </ul>
+                    <a href="https://www.cognitoforms.com/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92%E5%A4%96%E9%80%81%E5%A4%96%E5%B8%B6%E7%B7%9A%E4%B8%8A%E9%BB%9E%E9%A4%961" class="delivery-btn" target="_blank">
+					線上預訂外帶</a>
                 </div>
             </div>
-        </section>
-
-        <!-- 门店信息 -->
-        <section class="content-block" id="store-info">
-            <h2 class="section-title">門市資訊 & 外送服務</h2>
             
-            <div class="info-card">
-                <h4><i class="fas fa-store"></i> 門市基本資訊</h4>
-                <ul class="info-list">
-                    <li><i class="fas fa-map-pin"></i> <strong>地址：</strong>台北市南港區南港路一段57號（近南港捷運站2號出口，步行3分鐘）</li>
-                    <li><i class="fas fa-clock"></i> <strong>營業時間：</strong>週一至週日(公休日粉專會提前公告(用餐前請先確認有無店休)<br>11:30-21:30（全日供應中間沒有休息；20:30以後只提供外帶/外送）</li>
-                </ul>
-            </div>
-            
-            <div class="info-card">
-                <h4><i class="fas fa-motorcycle"></i> 外送外帶服務</h4>
-                <ul class="info-list">
-                    <li><i class="fas fa-check"></i> <strong>外送平台：</strong>Uber Eats、Foodpanda、lalamove需自行找外送平台</li>
-                    <li><i class="fas fa-check"></i> <strong>外送時間：</strong>與門市營業時間同步，外送範圍3公里內</li>
-                    <li><i class="fas fa-check"></i> <strong>包裝說明：</strong>牛排採用保溫盒包裝，附醬料分裝，確保口感不流失</li>
-                </ul>
-                <a href="https://www.cognitoforms.com/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92%E5%A4%96%E9%80%81%E5%A4%96%E5%B8%B6%E7%B7%9A%E4%B8%8A%E9%BB%9E%E9%A4%901" class="delivery-btn" target="_blank">線上預訂外帶</a>
-            </div>
-
-            <div class="map-container">
+            <div class="store-info-right">
+                <!-- Google地圖嵌入 -->
                 <iframe class="map-embed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.078784110231!2d121.6145188153256!3d25.05766338394548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a70c19505133%3A0x38410e83a4f1a0e0!2z5ZyL56uL5paw5aKe5Y2X5Yiw5Lit5b-D5Lqs5Yqo5Zyo5Lq6!5e0!3m2!1szh-TW!2stw!4v1689000000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- 美食画廊 -->
-        <section class="content-block" id="gallery">
+    <!-- 美食画廊 -->
+    <section class="content-section" id="gallery">
+        <div class="container">
             <h2 class="section-title">真實美味 肉眼可見</h2>
             <div class="gallery-grid">
-                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1607116667983-7a9a525f9d6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1607116667981-ff4b72a5d5c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="gallery-item gallery-item-1"></div>
+                <div class="gallery-item gallery-item-2"></div>
+                <div class="gallery-item gallery-item-3"></div>
+                <div class="gallery-item gallery-item-4"></div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- 预订转化区 -->
-        <section class="content-block" id="reservations" style="background-color: var(--colore-quattro); color: white;">
-            <h2 class="section-title" style="color: white;">用實在美味，溫暖每個日常</h2>
-            <p>在無名牛排，我們不追求華麗的詞藻，只專注做好每一份餐點：牛排要現切現煎，確保肉質鮮嫩；分量要足夠飽腹，不讓顧客花錢吃不夠；價格要親民實在，讓每個人都能輕鬆享用。不論是下班後的獨食小確幸，還是周末的家庭聚餐，我們都想用最誠懇的美味，讓你感受到「花小錢，吃大份，享好味」的幸福。</p>
-            <a href="#contact" class="delivery-btn" style="display: inline-block; margin-top: 20px;">立即聯絡預訂</a>
-        </section>
-    </div>
+    <!-- 预约转化区 -->
+    <section class="content-section dark-bg" id="reservations">
+        <div class="container">
+            <h2 class="section-title">用實在美味，溫暖每個日常</h2>
+            <p class="section-text">
+                在無名牛排，我們不追求華麗的詞藻，只專注做好每一份餐點：牛排要現切現煎，確保肉質鮮嫩；分量要足夠飽腹，不讓顧客花錢吃不夠；價格要親民實在，讓每個人都能輕鬆享用。不論是下班後的獨食小確幸，還是周末的家庭聚餐，我們都想用最誠懇的美味，讓你感受到「花小錢，吃大份，享好味」的幸福。
+            </p>
+            <a href="#contact" class="book-btn" style="display: inline-block; margin-top: 20px;">
+			立即聯絡預訂</a>
+        </div>
+    </section>
 
     <!-- 页脚 -->
     <footer id="contact">
@@ -722,182 +1483,407 @@
             <a href="#"><i class="fab fa-tripadvisor"></i></a>
         </div>
         
-        <div style="margin: 20px 0;">
-            <h3 style="color: white;">無名牛排</h3>
-            <p style="color: var(--colore-due);">平價大碗 · 食在好味道</p>
+        <div class="footer-logo">
+            <h2 style="color: var(--colore-tre);">無名牛排</h2>
+            <p style="color: var(--colore-tre); font-size: 0.9rem;">平價大碗 · 食在好味道</p>
         </div>
         
         <p class="copyright">
             &copy; 2024 無名牛排. 保留所有權利.
         </p>
     </footer>
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com/" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=21439768&style=0049&nbdigits=6&type=page&initCount=000135" title="Counters" Alt="Counters"   border="0" /></a>     
 
     <script>
         // DOM元素缓存
         const dom = {
-            loading: document.getElementById('loading'),
+            loadingOverlay: document.getElementById('loading-overlay'),
+            fullscreenOverlay: document.getElementById('fullscreen-overlay'),
+            fullscreenButton: document.getElementById('fullscreen-button'),
+            violationModal: document.getElementById('violation-modal'),
+            violationCloseButton: document.getElementById('violation-close-button'),
+            muteToggle: document.getElementById('mute-toggle'),
+            pausePlay: document.getElementById('pause-play'),
             menuToggle: document.getElementById('menuToggle'),
-            closeMenu: document.getElementById('closeMenu'),
-            mobileNav: document.getElementById('mobileNav'),
-            overlay: document.getElementById('overlay'),
-            slider: document.querySelector('.slider'),
-            slides: document.querySelectorAll('.slide'),
-            dots: document.querySelectorAll('.slider-dot'),
-            prevBtn: document.querySelector('.slider-nav.prev'),
-            nextBtn: document.querySelector('.slider-nav.next')
+            menuClose: document.getElementById('menuClose'),
+            menuOverlay: document.getElementById('menuOverlay'),
+            hiddenMenu: document.getElementById('hiddenMenu'),
+            mainHeader: document.getElementById('mainHeader')
         };
 
-        // 幻灯片状态
-        let currentSlide = 0;
-        let slideInterval;
-        let startX = 0;
-        let endX = 0;
+        /**
+         * 显示自定义警告窗口
+         */
+        function showViolationModal(message) {
+            dom.violationModal.querySelector('p').textContent = message;
+            dom.violationModal.style.display = 'flex';
+        }
 
-        // 初始化移动菜单
+        /**
+         * 隐藏自定义警告窗口
+         */
+        function hideViolationModal() {
+            dom.violationModal.style.display = 'none';
+        }
+
+        /**
+         * 处理全屏状态变化
+         */
+        function handleFullscreenChange() {
+            if (!document.fullscreenElement) {
+                showViolationModal('此網頁建議在全螢幕模式下瀏覽，請點擊確定以恢復。');
+            }
+        }
+
+        /**
+         * 初始化全屏功能
+         */
+        function setupFullscreen() {
+            // 进入全屏按钮
+            dom.fullscreenButton.addEventListener('click', () => {
+                document.documentElement.requestFullscreen().then(() => {
+                    dom.fullscreenOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        dom.fullscreenOverlay.style.display = 'none';
+                    }, 500);
+                    document.addEventListener('fullscreenchange', handleFullscreenChange);
+                }).catch(err => {
+                    console.error(`進入全屏失敗: ${err.message}`);
+                    showViolationModal('無法進入全螢幕模式，請檢查瀏覽器設定。');
+                });
+            });
+
+            // 关闭警告窗口时重新请求全屏
+            dom.violationCloseButton.addEventListener('click', () => {
+                hideViolationModal();
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.error(`重新進入全屏失敗: ${err.message}`);
+                    });
+                }
+            });
+
+            // 阻止ESC键退出全屏
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.fullscreenElement) {
+                    e.preventDefault();
+                    showViolationModal('請勿使用ESC退出全屏，如需退出請聯繫管理員。');
+                }
+            });
+        }
+
+        /**
+         * 初始化视频控制（模拟，因手机端使用静态背景）
+         */
+        function setupVideoControls() {
+            let isMuted = true;
+            let isPaused = false;
+            
+            // 静音切换
+            dom.muteToggle.addEventListener('click', () => {
+                isMuted = !isMuted;
+                dom.muteToggle.innerHTML = isMuted ? 
+                    '<i class="fas fa-volume-mute"></i>' : 
+                    '<i class="fas fa-volume-up"></i>';
+            });
+
+            // 播放/暂停
+            dom.pausePlay.addEventListener('click', () => {
+                isPaused = !isPaused;
+                dom.pausePlay.innerHTML = isPaused ? 
+                    '<i class="fas fa-play"></i>' : 
+                    '<i class="fas fa-pause"></i>';
+            });
+        }
+
+        /**
+         * 初始化移动端菜单
+         */
         function setupMobileMenu() {
             dom.menuToggle.addEventListener('click', () => {
-                dom.mobileNav.classList.add('active');
-                dom.overlay.classList.add('active');
+                dom.hiddenMenu.classList.add('active');
+                dom.menuOverlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                // 阻止触摸滑动
+                document.body.addEventListener('touchmove', preventTouch, { passive: false });
             });
 
             function closeMobileMenu() {
-                dom.mobileNav.classList.remove('active');
-                dom.overlay.classList.remove('active');
+                dom.hiddenMenu.classList.remove('active');
+                dom.menuOverlay.classList.remove('active');
                 document.body.style.overflow = 'auto';
+                // 允许触摸滑动
+                document.body.removeEventListener('touchmove', preventTouch);
             }
 
-            dom.closeMenu.addEventListener('click', closeMobileMenu);
-            dom.overlay.addEventListener('click', closeMobileMenu);
+            function preventTouch(e) {
+                e.preventDefault();
+            }
+
+            dom.menuClose.addEventListener('click', closeMobileMenu);
+            dom.menuOverlay.addEventListener('click', closeMobileMenu);
+            
+            // 菜单项点击后关闭菜单
+            document.querySelectorAll('.hidden-menu-nav a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
         }
 
-        // 初始化幻灯片
-        function setupSlider() {
-            // 显示指定幻灯片
-            function showSlide(index) {
-                // 确保索引在有效范围内
-                if (index < 0) {
-                    index = dom.slides.length - 1;
-                } else if (index >= dom.slides.length) {
-                    index = 0;
+        /**
+         * 初始化页头滚动效果
+         */
+        function setupHeaderScroll() {
+            let lastScrollTop = 0;
+            const scrollThreshold = 100; // 调整滚动阈值适应手机
+            
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+                    dom.mainHeader.classList.add('hidden');
+                } else {
+                    dom.mainHeader.classList.remove('hidden');
                 }
                 
-                // 更新幻灯片位置
-                dom.slider.style.transform = `translateX(-${index * 100}%)`;
+                lastScrollTop = scrollTop;
+            });
+        }
+
+        /**
+         * 初始化首页轮播
+         */
+        function setupHeroSlider() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.hero-slider .slide');
+            const dots = document.querySelectorAll('.hero-slider-dot');
+            let slideInterval;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
                 
-                // 更新指示点
-                dom.dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
-                
-                // 更新当前幻灯片索引
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
                 currentSlide = index;
             }
-            
-            // 下一张幻灯片
+
             function nextSlide() {
-                showSlide(currentSlide + 1);
+                let newIndex = (currentSlide + 1) % slides.length;
+                showSlide(newIndex);
             }
-            
-            // 上一张幻灯片
-            function prevSlide() {
-                showSlide(currentSlide - 1);
-            }
-            
-            // 点击指示点切换幻灯片
-            dom.dots.forEach((dot, index) => {
+
+            // 点击指示点切换
+            dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
-                    resetSlideInterval();
                     showSlide(index);
+                    resetSlideInterval();
+                });
+                
+                // 添加触摸支持
+                dot.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    showSlide(index);
+                    resetSlideInterval();
                 });
             });
-            
-            // 点击导航按钮
-            dom.prevBtn.addEventListener('click', () => {
-                resetSlideInterval();
-                prevSlide();
-            });
-            
-            dom.nextBtn.addEventListener('click', () => {
-                resetSlideInterval();
-                nextSlide();
-            });
-            
-            // 触摸事件处理
-            dom.slider.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                resetSlideInterval();
-            });
-            
-            dom.slider.addEventListener('touchend', (e) => {
-                endX = e.changedTouches[0].clientX;
-                handleSwipe();
-                startSlideInterval();
-            });
-            
-            // 处理滑动方向
-            function handleSwipe() {
-                const diff = startX - endX;
-                const swipeThreshold = 50;
-                
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        nextSlide(); // 向左滑动
-                    } else {
-                        prevSlide(); // 向右滑动
-                    }
-                }
-            }
-            
-            // 开始自动播放
+
+            // 自动轮播
             function startSlideInterval() {
                 slideInterval = setInterval(nextSlide, 5000);
             }
-            
-            // 重置自动播放计时器
+
             function resetSlideInterval() {
                 clearInterval(slideInterval);
                 startSlideInterval();
             }
-            
-            // 初始化自动播放
+
             startSlideInterval();
         }
 
-        // 页面加载完成后初始化
-        window.addEventListener('load', () => {
-            // 隐藏加载动画
-            setTimeout(() => {
-                dom.loading.classList.add('hidden');
-            }, 1000);
+        /**
+         * 初始化混合布局轮播
+         */
+        function setupMixedSliders() {
+            const sliders = document.querySelectorAll('.slider-half');
+            
+            sliders.forEach(slider => {
+                let currentSlide = 0;
+                const slidesContainer = slider.querySelector('.slider-half-inner');
+                const slides = slider.querySelectorAll('.slider-slide');
+                const dots = slider.querySelectorAll('.slider-dot');
+                const prevBtn = slider.querySelector('.slider-arrow.prev');
+                const nextBtn = slider.querySelector('.slider-arrow.next');
+                let slideInterval;
 
-            // 初始化功能
-            setupMobileMenu();
-            setupSlider();
-        });
+                function showSlide(index) {
+                    slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                    currentSlide = index;
+                }
 
-        // 平滑滚动到锚点
-        document.querySelectorAll('.mobile-nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    // 先关闭菜单
-                    dom.mobileNav.classList.remove('active');
-                    dom.overlay.classList.remove('active');
-                    document.body.style.overflow = 'auto';
+                function nextSlide() {
+                    let newIndex = (currentSlide + 1) % slides.length;
+                    showSlide(newIndex);
+                }
+
+                function prevSlide() {
+                    let newIndex = (currentSlide - 1 + slides.length) % slides.length;
+                    showSlide(newIndex);
+                }
+
+                // 点击指示点切换
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        showSlide(index);
+                        resetSlideInterval();
+                    });
                     
-                    // 滚动到目标位置
-                    setTimeout(() => {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }, 300);
+                    // 添加触摸支持
+                    dot.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        showSlide(index);
+                        resetSlideInterval();
+                    });
+                });
+
+                // 点击箭头切换
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    resetSlideInterval();
+                });
+                
+                prevBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    prevSlide();
+                    resetSlideInterval();
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    resetSlideInterval();
+                });
+                
+                nextBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    nextSlide();
+                    resetSlideInterval();
+                });
+
+                // 自动轮播
+                function startSlideInterval() {
+                    slideInterval = setInterval(nextSlide, 6000);
+                }
+
+                function resetSlideInterval() {
+                    clearInterval(slideInterval);
+                    startSlideInterval();
+                }
+
+                startSlideInterval();
+            });
+        }
+
+        /**
+         * 初始化图片保护功能
+         */
+        function setupImageProtection() {
+            // 防止右键菜单
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showViolationModal('本網站圖片受版權保護，禁止下載與複製。');
+                return false;
+            });
+
+            // 防止图片拖拽
+            document.querySelectorAll('img, .menu-item-image, .gallery-item, .slide').forEach(element => {
+                element.addEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                    showViolationModal('本網站圖片受版權保護，禁止下載與複製。');
+                    return false;
+                });
+                
+                // 防止长按保存图片（移动端）
+                element.addEventListener('touchstart', (e) => {
+                    this.startTime = new Date().getTime();
+                });
+                
+                element.addEventListener('touchend', (e) => {
+                    const endTime = new Date().getTime();
+                    if (endTime - this.startTime > 500) { // 长按超过500ms
+                        e.preventDefault();
+                        showViolationModal('本網站圖片受版權保護，禁止下載與複製。');
+                    }
+                });
+            });
+
+            // 防止选择文本
+            document.addEventListener('selectstart', (e) => {
+                e.preventDefault();
+                return false;
+            });
+
+            // 防止键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                // 防止Ctrl+S保存
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    showViolationModal('禁止保存網頁內容。');
+                }
+                
+                // 防止Ctrl+C复制
+                if (e.ctrlKey && e.key === 'c') {
+                    e.preventDefault();
+                    showViolationModal('本網站內容受版權保護，禁止複製。');
+                }
+                
+                // 防止F12开发者工具
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    showViolationModal('禁止使用開發者工具。');
                 }
             });
+        }
+
+        /**
+         * 图片查看器功能
+         */
+        function setupImageViewer() {
+            window.openImage = function(src) {
+                document.getElementById('bigImage').src = src;
+                document.getElementById('overlay').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            window.closeImage = function() {
+                document.getElementById('overlay').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        /**
+         * 页面加载完成后初始化所有功能
+         */
+        window.addEventListener('load', () => {
+            // 隐藏加载指示器
+            setTimeout(() => {
+                dom.loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    dom.loadingOverlay.style.display = 'none';
+                }, 500);
+            }, 1500);
+
+            // 初始化各个功能模块
+            setupFullscreen();
+            setupVideoControls();
+            setupMobileMenu();
+            setupHeaderScroll();
+            setupHeroSlider();
+            setupMixedSliders();
+            setupImageProtection();
+            setupImageViewer();
         });
     </script>
 </body>
