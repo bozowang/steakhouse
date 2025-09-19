@@ -140,30 +140,121 @@
             padding: 20px;
         }
 
-        /* 英雄区域 */
-        .hero-section {
+        /* 幻灯片容器 */
+        .slider-container {
             position: relative;
-            height: 50vh;
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('1.jpg');
+            width: 100%;
+            height: 300px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
             display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide-title {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .slide-description {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-            border-radius: 10px;
+            cursor: pointer;
+            z-index: 3;
+            transition: background-color 0.3s;
         }
 
-        .hero-content h1 {
-            font-size: 2rem;
-            margin-bottom: 15px;
+        .slider-nav:hover {
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
-        .hero-content p {
-            font-size: 1rem;
-            margin-bottom: 20px;
+        .slider-nav.prev {
+            left: 10px;
+        }
+
+        .slider-nav.next {
+            right: 10px;
         }
 
         /* 内容区块 */
@@ -433,6 +524,18 @@
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .slider-container {
+                height: 400px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .slide-description {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -471,13 +574,49 @@
 
     <!-- 主内容区域 -->
     <div class="main-content">
-        <!-- 英雄区域 -->
-        <section class="hero-section" id="home">
-            <div class="hero-content">
-                <h1>無名牛排</h1>
-                <p>堅持「厚切現煎、分量扎實」，讓每個人都能以親民價格，吃到飽足又滿意的好牛排</p>
+        <!-- 幻灯片区域 -->
+        <div class="slider-container" id="slider">
+            <div class="slider">
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                    <div class="slide-content">
+                        <h3 class="slide-title">無名牛排</h3>
+                        <p class="slide-description">堅持「厚切現煎、分量扎實」，讓每個人都能以親民價格，吃到飽足又滿意的好牛排</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                    <div class="slide-content">
+                        <h3 class="slide-title">實在用料 真心價格</h3>
+                        <p class="slide-description">不玩花俏包裝，只把成本用在食材上，每份牛排份量比同價位多30%，讓你吃飽又吃好</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                    <div class="slide-content">
+                        <h3 class="slide-title">街坊食堂的溫暖</h3>
+                        <p class="slide-description">不論是家庭聚餐、朋友小聚還是獨食小酌，都能在這裡找到高CP值的美味體驗</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1607116667981-ff4b72a5d5c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                    <div class="slide-content">
+                        <h3 class="slide-title">精選食材</h3>
+                        <p class="slide-description">嚴選優質肉品，用心烹調每一道料理，呈現最完美的口感與風味</p>
+                    </div>
+                </div>
             </div>
-        </section>
+            
+            <button class="slider-nav prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-nav next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <div class="slider-controls">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+            </div>
+        </div>
 
         <!-- 品牌故事 -->
         <section class="content-block" id="about">
@@ -492,7 +631,7 @@
             <h3 style="margin: 20px 0 15px; color: var(--colore-quattro);">海鮮類</h3>
             <div class="menu-items">
                 <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('a.jpg');"></div>
+                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1551504734-b464e32a163a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
                     <div class="menu-item-content">
                         <h4 class="menu-item-title">香煎鱸魚</h4>
                         <p class="menu-item-description">每日新鮮直送鱸魚，煎至外皮金脆，肉質細嫩不柴，分量足夠一人飽食，搭配自選兩種季節配菜，價格親民不打折。</p>
@@ -504,7 +643,7 @@
             <h3 style="margin: 20px 0 15px; color: var(--colore-quattro);">豬肉類</h3>
             <div class="menu-items">
                 <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('b.jpg');"></div>
+                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
                     <div class="menu-item-content">
                         <h4 class="menu-item-title">日式炸豬排</h4>
                         <p class="menu-item-description">豬里肌，裹上手工麵包糠酥炸，外皮酥脆不油膩，內層肉汁滿溢，搭配特製豬排醬。</p>
@@ -513,26 +652,14 @@
                 </div>
                 
                 <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('c.jpg');"></div>
+                    <div class="menu-item-image" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
                     <div class="menu-item-content">
                         <h4 class="menu-item-title">香煎豬排</h4>
                         <p class="menu-item-description">選用油脂分布均勻的梅花豬，簡單調味凸顯肉香，煎至邊緣微焦，肉質軟嫩不柴，分量比同價位多20%。</p>
                         <a href="https://bullinblack.blogspot.com/2024/12/blog-post_14.html" class="menu-item-link" target="_blank">查看詳細介紹 →</a>
                     </div>
                 </div>
-                
-                <div class="menu-item">
-                    <div class="menu-item-image" style="background-image: url('d.jpg');"></div>
-                    <div class="menu-item-content">
-                        <h4 class="menu-item-title">德國烤豬腳</h4>
-                        <p class="menu-item-description">整隻豬腳先醃後烤，外皮Q彈帶脆，內部肉質酥爛脫骨。</p>
-                        <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/2954550997423569543" class="menu-item-link" target="_blank">查看詳細介紹 →</a>
-                    </div>
-                </div>
             </div>
-
-            <!-- 其他菜单类别类似结构 -->
-            <!-- 为简洁起见，这里只展示部分内容 -->
         </section>
 
         <!-- 门店信息 -->
@@ -566,10 +693,10 @@
         <section class="content-block" id="gallery">
             <h2 class="section-title">真實美味 肉眼可見</h2>
             <div class="gallery-grid">
-                <div class="gallery-item" style="background-image: url('12.jpg');"></div>
-                <div class="gallery-item" style="background-image: url('13.jpg');"></div>
-                <div class="gallery-item" style="background-image: url('14.jpg');"></div>
-                <div class="gallery-item" style="background-image: url('15.jpg');"></div>
+                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1607116667983-7a9a525f9d6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1607116667981-ff4b72a5d5c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
             </div>
         </section>
 
@@ -579,20 +706,6 @@
             <p>在無名牛排，我們不追求華麗的詞藻，只專注做好每一份餐點：牛排要現切現煎，確保肉質鮮嫩；分量要足夠飽腹，不讓顧客花錢吃不夠；價格要親民實在，讓每個人都能輕鬆享用。不論是下班後的獨食小確幸，還是周末的家庭聚餐，我們都想用最誠懇的美味，讓你感受到「花小錢，吃大份，享好味」的幸福。</p>
             <a href="#contact" class="delivery-btn" style="display: inline-block; margin-top: 20px;">立即聯絡預訂</a>
         </section>
-
-        <!-- 图片放大功能 -->
-        <div class="content-block">
-            <h2 class="section-title">點圖片 → 全螢幕放大</h2>
-            <img src="m.jpg" class="thumbnail" alt="縮圖" onclick="openImage(this.src)">
-        </div>
-
-        <!-- 图片放大 overlay -->
-        <div class="image-overlay" id="imageOverlay" onclick="closeImage()">
-            <button class="close-overlay" onclick="closeImage()">
-                <i class="fas fa-times"></i>
-            </button>
-            <img class="enlarged-image" id="enlargedImage" src="" alt="放大圖">
-        </div>
     </div>
 
     <!-- 页脚 -->
@@ -627,9 +740,18 @@
             closeMenu: document.getElementById('closeMenu'),
             mobileNav: document.getElementById('mobileNav'),
             overlay: document.getElementById('overlay'),
-            imageOverlay: document.getElementById('imageOverlay'),
-            enlargedImage: document.getElementById('enlargedImage')
+            slider: document.querySelector('.slider'),
+            slides: document.querySelectorAll('.slide'),
+            dots: document.querySelectorAll('.slider-dot'),
+            prevBtn: document.querySelector('.slider-nav.prev'),
+            nextBtn: document.querySelector('.slider-nav.next')
         };
+
+        // 幻灯片状态
+        let currentSlide = 0;
+        let slideInterval;
+        let startX = 0;
+        let endX = 0;
 
         // 初始化移动菜单
         function setupMobileMenu() {
@@ -649,16 +771,97 @@
             dom.overlay.addEventListener('click', closeMobileMenu);
         }
 
-        // 图片放大功能
-        function openImage(src) {
-            dom.enlargedImage.src = src;
-            dom.imageOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeImage() {
-            dom.imageOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        // 初始化幻灯片
+        function setupSlider() {
+            // 显示指定幻灯片
+            function showSlide(index) {
+                // 确保索引在有效范围内
+                if (index < 0) {
+                    index = dom.slides.length - 1;
+                } else if (index >= dom.slides.length) {
+                    index = 0;
+                }
+                
+                // 更新幻灯片位置
+                dom.slider.style.transform = `translateX(-${index * 100}%)`;
+                
+                // 更新指示点
+                dom.dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                
+                // 更新当前幻灯片索引
+                currentSlide = index;
+            }
+            
+            // 下一张幻灯片
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+            
+            // 上一张幻灯片
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+            
+            // 点击指示点切换幻灯片
+            dom.dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    resetSlideInterval();
+                    showSlide(index);
+                });
+            });
+            
+            // 点击导航按钮
+            dom.prevBtn.addEventListener('click', () => {
+                resetSlideInterval();
+                prevSlide();
+            });
+            
+            dom.nextBtn.addEventListener('click', () => {
+                resetSlideInterval();
+                nextSlide();
+            });
+            
+            // 触摸事件处理
+            dom.slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                resetSlideInterval();
+            });
+            
+            dom.slider.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+                startSlideInterval();
+            });
+            
+            // 处理滑动方向
+            function handleSwipe() {
+                const diff = startX - endX;
+                const swipeThreshold = 50;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide(); // 向左滑动
+                    } else {
+                        prevSlide(); // 向右滑动
+                    }
+                }
+            }
+            
+            // 开始自动播放
+            function startSlideInterval() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            // 重置自动播放计时器
+            function resetSlideInterval() {
+                clearInterval(slideInterval);
+                startSlideInterval();
+            }
+            
+            // 初始化自动播放
+            startSlideInterval();
         }
 
         // 页面加载完成后初始化
@@ -670,6 +873,7 @@
 
             // 初始化功能
             setupMobileMenu();
+            setupSlider();
         });
 
         // 平滑滚动到锚点
