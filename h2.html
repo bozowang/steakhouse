@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=big5">
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>無名牛排&nbsp; </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,7 +57,7 @@
             height: auto;
         }
 
-        /* 全屏視頻背景 - 優化顯示 */
+        /* 全屏背景 - 優化顯示 */
         .video-background {
             position: fixed;
             top: 0;
@@ -355,7 +353,7 @@
             opacity: 1;
         }
 
-        /* 頁首樣式 */
+        /* 頭部樣式 */
         header {
             background-color: var(--colore-quattro);
             padding: 15px 20px;
@@ -913,7 +911,6 @@
             color: var(--colore-cinque);
             font-size: 1.2rem;
             width: 25px;
-            text-align: center;
         }
 
         .info-list {
@@ -934,7 +931,6 @@
             margin-top: 5px;
             flex-shrink: 0;
             width: 16px;
-            text-align: center;
         }
 
         .delivery-btn {
@@ -959,7 +955,7 @@
             border: none;
         }
 
-        /* 美食畫廓 */
+        /* 美食畫廊 */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -996,7 +992,7 @@
             background-image: url('15.jpg');
         }
 
-        /* 頁尾 */
+        /* 頁腳 */
         footer {
             background-color: rgba(247, 246, 245, 0.9);
             padding: 80px 0 40px;
@@ -1023,6 +1019,7 @@
             justify-content: center;
             gap: 20px;
             margin-bottom: 40px;
+            padding: 0;
         }
 
         .social-link {
@@ -1053,7 +1050,7 @@
             margin-top: 30px;
         }
 
-        /* 回應式設計 */
+        /* 回應式樣式調整 */
         @media (max-width: 992px) {
             .hero-content h1 {
                 font-size: 3rem;
@@ -1143,73 +1140,61 @@
             width: 100vw;
             height: 100vh;
         }
-        
-        /* 縮圖 */
-        .thumbnail {
-            width: 200px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .thumbnail:hover {
-            transform: scale(1.05);
-        }
-
-        /* 全螢幕遮罩（預設隱藏） */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        /* 放大的圖片（置中最大化） */
-        .overlay img {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        /* 點擊關閉提示 */
-        .overlay::after {
-            content: "點擊任意處關閉";
-            position: absolute;
-            bottom: 30px;
-            color: #ccc;
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-        
-        /* 修復功能表展開狀態 */
-        .hidden-menu.active {
-            right: 0;
-            display: block;
-        }
-        
-        /* 確保點擊功能表項目後菜單保持展開 */
-        .hidden-menu {
-            transition: right 0.3s ease;
-        }
-        
-        /* 移動端功能表項目樣式 */
-        .hidden-menu-nav a {
-            display: block;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
     </style>
-</head>
+    <style>
+    body {
+      text-align: center;
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+    }
 
+    /* 縮圖 */
+    .thumbnail {
+      width: 200px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .thumbnail:hover {
+      transform: scale(1.05);
+    }
+
+    /* 全螢幕遮罩（預設隱藏） */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    /* 放大的圖片（置中最大化） */
+    .overlay img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* 點擊關閉提示 */
+    .overlay::after {
+      content: "點擊任意處關閉";
+      position: absolute;
+      bottom: 30px;
+      color: #ccc;
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
 <body>
 
     <!-- 載入動畫 -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="spinner"></div>
-        <p>牛排美味載入中...</p>
+        <p>牛排美味加載中...</p>
     </div>
 
     <!-- 全屏提示層 -->
@@ -1221,9 +1206,10 @@
     <!-- 警告彈窗 -->
     <div class="violation-modal" id="violation-modal">
         <div class="violation-content">
-            <h2><i class="fas fa-exclamation-circle"></i> 警告</h2>
+            <h2><i class="fas fa-exclamation-circle"></i></h2>
             <p></p>
-            <button class="violation-close-button" id="violation-close-button">確定</button>
+            <button class="violation-close-button" id="violation-close-button">
+			確定</button>
         </div>
     </div>
 
@@ -1231,7 +1217,7 @@
     <div class="video-background">
         <video id="bg-video" autoplay muted loop playsinline>
             <source src="https://assets.codepen.io/3364143/sample.mp4" type="video/mp4">
-            您的流覽器不支援視頻播放。
+            您的瀏覽器不支援視頻播放。
         </video>
         <div class="video-overlay"></div>
     </div>
@@ -1260,13 +1246,18 @@
         <div class="left-menu-content">
             <nav class="left-menu-nav">
                 <ul>
-                    <li><a href="#home"><i class="fas fa-home"></i> <span>首頁</span></a></li>
-                    <li><a href="#about"><i class="fas fa-info-circle"></i> <span>關於我們</span></a></li>
-                    <li><a href="#menu"><i class="fas fa-utensils"></i> <span>菜單</span></a></li>
-                    <li><a href="#store-info"><i class="fas fa-map-marker-alt"></i> <span>門市信息</span></a></li>
-                    <li><a href="#gallery"><i class="fas fa-image"></i> <span>美食畫廊</span></a></li>
-                    <li><a href="#reservations"><i class="fas fa-calendar-alt"></i> <span>線上預訂</span></a></li>
-                    <li><a href="#contact"><i class="fas fa-phone"></i> <span>聯絡我們</span></a></li>
+                    <li><a href="#home" class="menu-link"><i class="fas fa-home"></i> <span>首頁</span></a></li>
+                    <li><a href="#about" class="menu-link"><i class="fas fa-info-circle"></i> <span>
+					關於我們</span></a></li>
+                    <li><a href="#menu" class="menu-link"><i class="fas fa-utensils"></i> <span>菜單</span></a></li>
+                    <li><a href="#store-info" class="menu-link"><i class="fas fa-map-marker-alt"></i> <span>
+					門市資訊</span></a></li>
+                    <li><a href="#gallery" class="menu-link"><i class="fas fa-image"></i> <span>
+					美食畫廊</span></a></li>
+                    <li><a href="#reservations" class="menu-link"><i class="fas fa-calendar-alt"></i> <span>
+					線上預訂</span></a></li>
+                    <li><a href="#contact" class="menu-link"><i class="fas fa-phone"></i> <span>
+					聯絡我們</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -1283,13 +1274,13 @@
         
         <nav class="hidden-menu-nav">
             <ul>
-                <li><a href="#home" class="menu-link">首頁</a></li>
-                <li><a href="#about" class="menu-link">關於我們</a></li>
-                <li><a href="#menu" class="menu-link">菜單</a></li>
-                <li><a href="#store-info" class="menu-link">門市信息</a></li>
-                <li><a href="#gallery" class="menu-link">美食畫廊</a></li>
-                <li><a href="#reservations" class="menu-link">線上預訂</a></li>
-                <li><a href="#contact" class="menu-link">聯絡我們</a></li>
+                <li><a href="#home" class="mobile-menu-link">首頁</a></li>
+                <li><a href="#about" class="mobile-menu-link">關於我們</a></li>
+                <li><a href="#menu" class="mobile-menu-link">菜單</a></li>
+                <li><a href="#store-info" class="mobile-menu-link">門市資訊</a></li>
+                <li><a href="#gallery" class="mobile-menu-link">美食畫廊</a></li>
+                <li><a href="#reservations" class="mobile-menu-link">線上預訂</a></li>
+                <li><a href="#contact" class="mobile-menu-link">聯絡我們</a></li>
             </ul>
         </nav>
         
@@ -1301,7 +1292,7 @@
         </div>
     </div>
 
-    <!-- 頁首 -->
+    <!-- 頭部 -->
     <header id="mainHeader">
         <div class="logo">
             <img src="logo.png" alt="無名牛排 - 平價大碗牛排專門店">
@@ -1324,7 +1315,7 @@
         <div class="slide slide-1 active">
             <div class="hero-content">
                 <h1>無名牛排</h1>
-                <p>堅持「厚切現煎、分量紮實」，讓每個人都能以親民價格，吃到飽足又滿意的牛排</p>
+                <p>堅持「厚切現煎、分量紮實」，讓每個人都能以親民價格，吃到飽足又滿意的好牛排</p>
             </div>
         </div>
         
@@ -1342,7 +1333,7 @@
             </div>
         </div>
         
-        <!-- 輪播控制點 -->
+        <!-- 輪播控制器 -->
         <div class="hero-slider-controls">
             <div class="hero-slider-dot active" data-slide="0"></div>
             <div class="hero-slider-dot" data-slide="1"></div>
@@ -1421,230 +1412,6 @@
         <div class="menu-container">
             <h2 class="section-title">高CP值是日菜單懶人包</h2>
             
-            <h1>點圖片 → 全螢幕放大</h1>
-
-            <!-- 小縮圖 -->
-            <img src="m.jpg" class="thumbnail" alt="縮圖" onclick="openImage(this.src)">
-
-            <!-- 全螢幕放大容器 -->
-            <div class="overlay" id="overlay" onclick="closeImage()">
-                <img id="bigImage" src="" alt="放大圖">
-            </div>
-            
-            <div class="menu-category">
-                <h3 class="menu-category-title">海鮮類</h3>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('a.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">香煎鱸魚</h4>
-                            <p class="menu-item-description">
-                            每日新鮮直送鱸魚，煎至外皮金脆，肉質細嫩不柴，分量足夠一人飽食，搭配自選兩種季節配菜，價格親民不打折。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/a.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="menu-category">
-                <h3 class="menu-category-title">豬肉類</h3>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('b.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">日式炸豬排</h4>
-                            <p class="menu-item-description">
-                            豬裡肌，裹上手工麵包糠酥炸，外皮酥脆不油膩，內層肉汁滿溢，搭配特製豬排醬。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/1_11.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('c.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">香煎豬排</h4>
-                            <p class="menu-item-description">
-                            選用油脂分佈均勻的梅花豬，簡單調味凸顯肉香，煎至邊緣微焦，肉質軟嫩不柴，分量比同價位多20%。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_14.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('d.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">德國烤豬腳</h4>
-                            <p class="menu-item-description">
-                            整只豬腳先醃後烤，外皮Q彈帶脆，內部肉質酥爛脫骨。</p>
-                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/2954550997423569543" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-category">
-                <h3 class="menu-category-title">雞肉類</h3>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('e.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">香煎去骨雞腿</h4>
-                            <p class="menu-item-description">
-                            整塊去骨雞腿肉，用香料醃制6小時以上，煎至外皮金黃，肉質多汁不柴。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/1_17.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-category">
-                <h3 class="menu-category-title">牛排類</h3>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('f.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">NZ菲力牛排</h4>
-                            <p class="menu-item-description">
-                            選用紐西蘭草飼牛菲力，2公分厚切確保嫩度，脂肪含量低，適合喜歡清爽口感的顧客，附自製黑胡椒醬和雙配菜。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_31.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('g.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">超值板腱牛排</h4>
-                            <p class="menu-item-description">
-                            CP值之王！取自牛肩胛部位，中間帶筋，肉質結實有嚼勁，油花分佈均勻，分量十足，學生族群最愛。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_17.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('h.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">經典NZ上蓋牛排</h4>
-                            <p class="menu-item-description">
-                            肋眼上蓋肉，大理石紋油花豐富，煎烤後肉汁滿溢，風味濃鬱，附兩種配菜，性價比超高。</p>
-                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post.html" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-category">
-                <h3 class="menu-category-title">鴨肉類</h3>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="menu-item-image" style="background-image: url('i.jpg');"></div>
-                        <div class="menu-item-content">
-                            <h4 class="menu-item-title">香煎櫻桃鴨胸</h4>
-                            <p class="menu-item-description">
-                            選用宜蘭櫻桃鴨胸，皮煎至酥脆，肉質鮮嫩不柴，脂肪分佈均勻，搭配橙醬解膩，分量紮實，性價比高。</p>
-                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/5962579112663121162" class="menu-item-link" target="_blank">
-                            查看詳細介紹 →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 門店信息區塊 -->
-    <section class="store-info-section" id="store-info">
-        <div class="store-info-container">
-            <div class="store-info-left">
-                <h3 class="store-info-title">門市信息 &amp; 外送服務</h3>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-store"></i> 門市基本資訊</h4>
-                    <ul class="info-list">
-                        <li><i class="fas fa-map-pin"></i> <strong>地址：</strong>臺北市南港區南港路一段57號（近南港捷運站2號出口，步行3分鐘）</li>
-                        <li><i class="fas fa-clock"></i> <strong>營業時間：</strong>週一至周日(公休日粉專會提前公告(用餐前請先確認有無店休)<br>
-                            11:30-21:30（全日供應中間沒有休息；20:30以後只提供外帶/外送）</li>
-                    </ul>
-                </div>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-motorcycle"></i> 外送外帶服務</h4>
-                    <ul class="info-list">
-                        <li><i class="fas fa-check"></i> <strong>外送平臺：</strong>Uber 
-                        Eats、Foodpanda、lalamove需自行找外送平臺</li>
-                        <li><i class="fas fa-check"></i> <strong>外送時間：</strong>與門市營業時間同步，外送範圍3公里內</li>
-                        <li><i class="fas fa-check"></i> <strong>包裝說明：</strong>牛排採用保溫盒包裝，附醬料分裝，確保口感不流失</li>
-                    </ul>
-                    <a href="https://www.cognitoforms.com/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92%E5%A4%96%E9%80%81%E5%A4%96%E5%B8%B6%E7%B7%9A%E4%B8%8A%E9%BB%9E%E9%A4%901" class="delivery-btn" target="_blank">
-                    線上預訂外帶</a>
-                </div>
-            </div>
-            
-            <div class="store-info-right">
-                <!-- Google地圖嵌入 -->
-                <iframe class="map-embed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.078784110231!2d121.6145188153256!3d25.05766338394548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a70c19505133%3A0x38410e83a4f1a0e0!2z5ZyL56uL5paw5aKe5Y2X5Yiw5Lit5b-D5Lqs5Yqo5Zyo5Lq6!5e0!3m2!1szh-TW!2stw!4v1689000000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- 美食畫廊 -->
-    <section class="content-section" id="gallery">
-        <div class="container">
-            <h2 class="section-title">真實美味 肉眼可見</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item gallery-item-1"></div>
-                <div class="gallery-item gallery-item-2"></div>
-                <div class="gallery-item gallery-item-3"></div>
-                <div class="gallery-item gallery-item-4"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 預訂轉化區 -->
-    <section class="content-section dark-bg" id="reservations">
-        <div class="container">
-            <h2 class="section-title">用實在美味，溫暖每個日常</h2>
-            <p class="section-text">
-                在無名牛排，我們不追求華麗的詞藻，只專注做好每一份餐點：牛排要現切現煎，確保肉質鮮嫩；分量要足夠飽腹，不讓顧客花錢吃不夠；價格要親民實在，讓每個人都能輕鬆享用。不論是下班後的獨食小確幸，還是週末的家庭聚餐，我們都想用最誠懇的美味，讓你感受到「花小錢，吃大份，享好味」的幸福。
-            </p>
-            <a href="#contact" class="book-btn" style="display: inline-block; margin-top: 20px;">
-            立即聯絡預訂</a>
-        </div>
-    </section>
-
-    <!-- 頁尾 -->
-    <footer id="contact">
-        <h2 class="footer-title">無名牛排</h2>
-        <p class="footer-address">
-            臺北市南港區南港路一段57號 | 營業時間：週一至周日 11:30-21:30；中間沒有休息；20:00以後只提供外帶｜外送
-        </p>
-        
-        <div class="social-links">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-tripadvisor"></i></a>
-        </div>
-        
-        <div class="footer-logo">
-            <h2 style="color: var(--colore-tre);">無名牛排</h2>
-            <p style="color: var(--colore-tre); font-size: 0.9rem;">平價大碗 • 食在好味道</p>
-        </div>
-        
-        <p class="copyright">
-            &copy; 2024 無名牛排. 保留所有權利.
-        </p>
-    </footer>
-<!-- hitwebcounter Code START -->
-<a href="https://www.hitwebcounter.com/" target="_blank">
-<img src="https://hitwebcounter.com/counter/counter.php?page=21439768&style=0049&nbdigits=6&type=page&initCount=000135" title="Counters" Alt="Counters"   border="0" /></a>
-
     <script>
         // DOM元素緩存
         const dom = {
@@ -1662,7 +1429,8 @@
             hiddenMenu: document.getElementById('hiddenMenu'),
             leftAutoMenu: document.getElementById('leftAutoMenu'),
             leftMenuToggle: document.getElementById('leftMenuToggle'),
-            mainHeader: document.getElementById('mainHeader')
+            mainHeader: document.getElementById('mainHeader'),
+            mobileMenuLinks: document.querySelectorAll('.mobile-menu-link')
         };
 
         /**
@@ -1685,7 +1453,7 @@
          */
         function handleFullscreenChange() {
             if (!document.fullscreenElement) {
-                showViolationModal('此網頁建議在全螢幕模式下流覽，請點擊確定以恢復。');
+                showViolationModal('此網頁建議在全螢幕模式下瀏覽，請點擊確定以恢復。');
             }
         }
 
@@ -1703,7 +1471,7 @@
                     document.addEventListener('fullscreenchange', handleFullscreenChange);
                 }).catch(err => {
                     console.error(`進入全屏失敗: ${err.message}`);
-                    showViolationModal('無法進入全螢幕模式，請檢查流覽器設置。');
+                    showViolationModal('無法進入全螢幕模式，請檢查瀏覽器設定。');
                 });
             });
 
@@ -1768,28 +1536,24 @@
 
             dom.menuClose.addEventListener('click', closeMobileMenu);
             dom.menuOverlay.addEventListener('click', closeMobileMenu);
-            
-            // 添加功能表項目點擊處理 - 保持功能表展開狀態
-            document.querySelectorAll('.menu-link').forEach(link => {
-                link.addEventListener('click', function(e) {
+
+            // 移動端功能表連結點擊處理
+            dom.mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    
-                    // 獲取目標元素的ID
-                    const targetId = this.getAttribute('href');
+                    const targetId = link.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     
                     if (targetElement) {
                         // 平滑滾動到目標位置
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80, // 減去頭部高度
+                            behavior: 'smooth'
                         });
+                        
+                        // 關閉菜單
+                        closeMobileMenu();
                     }
-                    
-                    // 不關閉功能表，保持展開狀態
-                    // 只隱藏遮罩層
-                    dom.menuOverlay.classList.remove('active');
-                    document.body.style.overflow = 'auto';
                 });
             });
         }
@@ -1804,7 +1568,7 @@
         }
 
         /**
-         * 初始化頁頭滾動效果
+         * 初始化頭部滾動效果
          */
         function setupHeaderScroll() {
             let lastScrollTop = 0;
@@ -1981,18 +1745,6 @@
         }
 
         /**
-         * 圖片放大功能
-         */
-        function openImage(src) {
-            document.getElementById('bigImage').src = src;
-            document.getElementById('overlay').style.display = 'flex';
-        }
-
-        function closeImage() {
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        /**
          * 頁面載入完成後初始化所有功能
          */
         window.addEventListener('load', () => {
@@ -2015,5 +1767,239 @@
             setupImageProtection();
         });
     </script>
-</body>
+      <h1>點圖片 → 全螢幕放大</h1>
+
+  <!-- 小縮圖 -->
+  <img src="m.jpg" class="thumbnail" alt="縮圖" onclick="openImage(this.src)">
+
+  <!-- 全螢幕放大容器 -->
+  <div class="overlay" id="overlay" onclick="closeImage()">
+    <img id="bigImage" src="" alt="放大圖">
+  </div>
+
+  <script>
+    function openImage(src) {
+      document.getElementById('bigImage').src = src;
+      document.getElementById('overlay').style.display = 'flex';
+    }
+
+    function closeImage() {
+      document.getElementById('overlay').style.display = 'none';
+    }
+  </script>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">海鮮類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('a.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎鱸魚</h4>
+                            <p class="menu-item-description">
+							每日新鮮直送鱸魚，煎至外皮金脆，肉質細嫩不柴，分量足夠一人飽食，搭配自選兩種季節配菜，價格親民不打折。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/a.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">豬肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('b.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">日式炸豬排</h4>
+                            <p class="menu-item-description">
+							豬裡肌，裹上手工麵包糠酥炸，外皮酥脆不油膩，內層肉汁滿溢，搭配特製豬排醬。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/1_11.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('c.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎豬排</h4>
+                            <p class="menu-item-description">
+							選用油脂分佈均勻的梅花豬，簡單調味凸顯肉香，煎至邊緣微焦，肉質軟嫩不柴，分量比同價位多20%。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_14.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('d.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">德國烤豬腳</h4>
+                            <p class="menu-item-description">
+							整隻豬腳先醃後烤，外皮Q彈帶脆，內部肉質酥爛脫骨。</p>
+                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/2954550997423569543" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">雞肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('e.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎去骨雞腿</h4>
+                            <p class="menu-item-description">
+							整塊去骨雞腿肉，用香料醃製6小時以上，煎至外皮金黃，肉質多汁不柴。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/1_17.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">牛排類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('f.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">NZ菲力牛排</h4>
+                            <p class="menu-item-description">
+							選用紐西蘭草飼牛菲力，2公分厚切確保嫩度，脂肪含量低，適合喜歡清爽口感的顧客，附自製黑胡椒醬和雙配菜。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_31.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('g.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">超值板腱牛排</h4>
+                            <p class="menu-item-description">
+							CP值之王！取自牛肩胛部位，中間帶筋，肉質結實有嚼勁，油花分佈均勻，分量十足，學生族群最愛。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post_17.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('h.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">經典NZ上蓋牛排</h4>
+                            <p class="menu-item-description">
+							肋眼上蓋肉，大理石紋油花豐富，煎烤後肉汁滿溢，風味濃鬱，附兩種配菜，性價比超高。</p>
+                            <a href="https://bullinblack.blogspot.com/2024/12/blog-post.html" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-category">
+                <h3 class="menu-category-title">鴨肉類</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-image" style="background-image: url('i.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">香煎櫻桃鴨胸</h4>
+                            <p class="menu-item-description">
+							選用宜蘭櫻桃鴨胸，皮煎至酥脆，肉質鮮嫩不柴，脂肪分佈均勻，搭配橙醬解膩，分量紮實，性價比高。</p>
+                            <a href="https://www.blogger.com/blog/post/preview/2585833921926162423/5962579112663121162" class="menu-item-link" target="_blank">
+							查看詳細介紹 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 門店信息區塊 -->
+    <section class="store-info-section" id="store-info">
+        <div class="store-info-container">
+            <div class="store-info-left">
+                <h3 class="store-info-title">門市資訊 &amp; 外送服務</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-store"></i> 門市基本資訊</h4>
+                    <ul class="info-list">
+                        <li><i class="fas fa-map-pin"></i> <strong>地址：</strong>臺北市南港區南港路一段57號（近南港捷運站2號出口，步行3分鐘）</li>
+                        <li><i class="fas fa-clock"></i> <strong>營業時間：</strong>週一至週日(公休日粉專會提前公告(用餐前請先確認有無店休)<br>
+                            11:30-21:30（全日供應中間沒有休息；20:30以後只提供外帶/外送）</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-motorcycle"></i> 外送外帶服務</h4>
+                    <ul class="info-list">
+                        <li><i class="fas fa-check"></i> <strong>外送平臺：</strong>Uber 
+						Eats、Foodpanda、lalamove需自行找外送平臺</li>
+                        <li><i class="fas fa-check"></i> <strong>外送時間：</strong>與門市營業時間同步，外送範圍3公里內</li>
+                        <li><i class="fas fa-check"></i> <strong>包裝說明：</strong>牛排採用保溫盒包裝，附醬料分裝，確保口感不流失</li>
+                    </ul>
+                    <a href="https://www.cognitoforms.com/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92/%E7%84%A1%E5%90%8D%E7%89%9B%E6%8E%92%E5%A4%96%E9%80%81%E5%A4%96%E5%B8%B6%E7%B7%9A%E4%B8%8A%E9%BB%9E%E9%A4%961" class="delivery-btn" target="_blank">
+					線上預訂外帶</a>
+                </div>
+            </div>
+            
+            <div class="store-info-right">
+                <!-- Google地圖嵌入 -->
+                <iframe class="map-embed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.078784110231!2d121.6145188153256!3d25.05766338394548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a70c19505133%3A0x38410e83a4f1a0e0!2z5ZyL56uL5paw5aKe5Y2X5Yiw5Lit5b-D5Lqs5Yqo5Zyo5Lq6!5e0!3m2!1szh-TW!2stw!4v1689000000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- 美食畫廊 -->
+    <section class="content-section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">真實美味 肉眼可見</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item gallery-item-1"></div>
+                <div class="gallery-item gallery-item-2"></div>
+                <div class="gallery-item gallery-item-3"></div>
+                <div class="gallery-item gallery-item-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 預訂強化區 -->
+    <section class="content-section dark-bg" id="reservations">
+        <div class="container">
+            <h2 class="section-title">用實在美味，溫暖每個日常</h2>
+            <p class="section-text">
+                在無名牛排，我們不追求華麗的詞藻，只專注做好每一份餐點：牛排要現切現煎，確保肉質鮮嫩；分量要足夠飽腹，不讓顧客花錢吃不夠；價格要親民實在，讓每個人都能輕鬆享用。不論是下班後的獨食小確幸，還是週末的家庭聚餐，我們都想用最誠懇的美味，讓你感受到「花小錢，吃大份，享好味」的幸福。
+            </p>
+            <a href="#contact" class="book-btn" style="display: inline-block; margin-top: 20px;">
+			立即聯絡預訂</a>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer id="contact">
+        <h2 class="footer-title">無名牛排</h2>
+        <p class="footer-address">
+            臺北市南港區南港路一段57號 | 營業時間：週一至週日 11:30-21:30；中間沒有休息；20:00以後只提供外帶｜外送
+        </p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tripadvisor"></i></a>
+        </div>
+        
+        <div class="footer-logo">
+            <h2 style="color: var(--colore-tre);">無名牛排</h2>
+            <p style="color: var(--colore-tre); font-size: 0.9rem;">平價大碗 • 食在好味道</p>
+        </div>
+        
+        <p class="copyright">
+            &copy; 2024 無名牛排. 保留所有權利.
+        </p>
+    </footer>
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com/" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=21439768&style=0049&nbdigits=6&type=page&initCount=000135" title="Counters" Alt="Counters"   border="0" /></a>     
+    </body>
 </html>
