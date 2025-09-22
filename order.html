@@ -774,7 +774,7 @@
 
     <script>
         // 使用最新的部署ID
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyXdcvcYZlssF1dmQa5wnwxqDxV8m8WnKYSfJj15Pmwv0C2eU0iFx_iljPcy2_wUhSm/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxPUao92J65cT-0LzR4mFXh8nFSF_31rroYxTs-nyBQ3o7KT-J7sSe41gt5R8LZxy4K/exec';
         
         // 初始化购物车总计
         updateCartTotal();
@@ -841,6 +841,9 @@
             document.getElementById('subtotal').textContent = '$' + subtotal;
             document.getElementById('shipping-fee').textContent = '$' + shippingFee;
             document.getElementById('total-amount').textContent = '$' + total;
+            
+            // 更新确认页的总金额
+            document.getElementById('confirmTotal').textContent = '$' + total;
         }
         
         // 显示错误消息
@@ -891,12 +894,13 @@
         }
         
         // 显示订单确认
-        function showOrderConfirmation(orderData) {
+        function showOrderConfirmation(orderData, responseData) {
             document.getElementById('orderForm').style.display = 'none';
             document.getElementById('orderConfirmation').style.display = 'block';
             
-            // 填充订单详情
-            document.getElementById('orderId').textContent = generateOrderId();
+            // 填充订单详情，优先使用服务器返回的订单ID
+            const orderId = responseData && responseData.orderId ? responseData.orderId : generateOrderId();
+            document.getElementById('orderId').textContent = orderId;
             document.getElementById('confirmTotal').textContent = '$' + orderData.total;
             document.getElementById('confirmPayment').textContent = 
                 document.getElementById('payment').options[document.getElementById('payment').selectedIndex].text;
@@ -951,7 +955,7 @@
             return isValid;
         }
         
-        // 提交订单 - 修复了响应处理逻辑
+        // 提交订单
         function submitOrder() {
             // 表单验证
             if (!validateForm()) {
@@ -994,7 +998,7 @@
                 timestamp: new Date().toLocaleString('zh-TW')
             };
             
-            // 发送数据到Google Apps Script，修复了响应处理逻辑
+            // 发送数据到Google Apps Script
             fetch(scriptURL, {
                 method: 'POST',
                 headers: {
@@ -1003,14 +1007,12 @@
                 body: JSON.stringify(formData)
             })
             .then(response => {
-                // 先尝试解析响应，无论HTTP状态码如何
+                // 先尝试解析响应
                 return response.text().then(text => {
                     try {
-                        // 尝试将响应解析为JSON
                         const data = JSON.parse(text);
-                        return { status: response.status, data: data };
+                        return { status: response.status, data: data, rawText: text };
                     } catch (e) {
-                        // 解析JSON失败
                         return { 
                             status: response.status, 
                             data: null, 
@@ -1026,24 +1028,22 @@
                 document.getElementById('submitOrder').disabled = false;
                 
                 // 显示调试信息
-                showDebugInfo(`状态码: ${result.status}, 响应数据: ${JSON.stringify(result.data)}, 原始响应: ${result.rawText || '无'}`);
+                showDebugInfo(`状态码: ${result.status}, 响应数据: ${JSON.stringify(result.data)}, 原始响应: ${result.rawText}`);
                 
-                // 检查订单是否成功提交（即使状态码不是200）
-                // 因为后台已经收到订单，我们更关注响应内容中的result字段
+                // 检查订单是否成功提交
                 if (result.data && result.data.result === "success") {
                     // 显示成功消息
                     showSuccess();
                     
                     // 显示订单确认
-                    showOrderConfirmation(formData);
+                    showOrderConfirmation(formData, result.data);
                 } else {
-                    // 订单可能已提交但返回了错误状态，给予相应提示
+                    // 订单提交失败
                     const errorMsg = result.data && result.data.message 
                         ? result.data.message 
                         : result.error || '提交过程中出现错误';
                     
-                    // 特殊提示：订单可能已提交
-                    showError(`订单提交过程出现问题: ${errorMsg}。请注意：您的订单可能已经被接收，请检查订单状态。`);
+                    showError(errorMsg);
                 }
             })
             .catch(error => {
@@ -1051,8 +1051,7 @@
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('submitOrder').disabled = false;
                 
-                // 网络错误，但订单仍可能已提交
-                showError('网络连接出现问题。请注意：您的订单可能已经被接收，请检查订单状态。');
+                showError('网络连接出现问题，请稍后重试。');
                 showDebugInfo("网络错误: " + error.message);
             });
         }
@@ -1080,6 +1079,29 @@
                 showError('请输入您的地址', 'addressError');
             } else {
                 hideError('addressError');
+            }
+        });
+        
+        // 移动端菜单功能
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '70px';
+                navLinks.style.right = '15px';
+                navLinks.style.backgroundColor = 'white';
+                navLinks.style.padding = '15px';
+                navLinks.style.borderRadius = '8px';
+                navLinks.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                navLinks.style.zIndex = '1000';
+                navLinks.querySelectorAll('li').forEach(li => {
+                    li.style.margin = '10px 0';
+                    li.style.marginLeft = '0';
+                });
             }
         });
     </script>
