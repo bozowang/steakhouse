@@ -664,10 +664,10 @@
     </footer>
 
     <script>
-        // 替换为你最新部署的Google Apps Script URL（关键！）
+        // 1. 配置后端接口（替换为你最新部署的Google Apps Script URL）
         const scriptURL = 'https://script.google.com/macros/s/AKfycby5yuCb0IA1r9YTUSESJsFYiYv3sDc9J_EEwR9C2jOAW7WDAS6W3n6LvlQ7Q9ugzngK/exec';
         
-        // 菜单数据（前端本地存储）
+        // 2. 菜单数据（前端本地存储）
         const restaurantMenus = {
             italian: {
                 name: "義式風味廚房",
@@ -704,30 +704,25 @@
             }
         };
 
-        // 1. 更新购物车金额
+        // 3. 购物车金额更新
         function updateCartTotal() {
             let subtotal = 0;
             const cartItems = document.querySelectorAll('.cart-item');
             
-            // 计算小计
             cartItems.forEach(item => {
                 const price = parseFloat(item.querySelector('.item-price').dataset.rawPrice);
                 const quantity = parseInt(item.querySelector('.quantity').textContent);
                 subtotal += price * quantity;
             });
             
-            // 计算总计（含运费，购物车为空时运费为0）
             const shippingFee = cartItems.length > 0 ? 30 : 0;
             const total = subtotal + shippingFee;
             
-            // 更新页面显示
             document.getElementById('subtotal').textContent = `$${subtotal}`;
             document.getElementById('shippingFee').textContent = `$${shippingFee}`;
             document.getElementById('totalAmount').textContent = `$${total}`;
             
-            // 启用/禁用结账按钮
-            const checkoutBtn = document.getElementById('checkoutBtn');
-            checkoutBtn.disabled = cartItems.length === 0;
+            document.getElementById('checkoutBtn').disabled = cartItems.length === 0;
             if (cartItems.length === 0) {
                 document.getElementById('cartItems').innerHTML = '<div class="empty-cart">購物車是空的</div>';
             }
@@ -735,20 +730,18 @@
             return total;
         }
 
-        // 2. 添加商品到购物车
+        // 4. 添加商品到购物车
         function addToCart(itemName, itemPrice) {
             const cartContainer = document.getElementById('cartItems');
             const existingItem = Array.from(cartContainer.querySelectorAll('.cart-item'))
                 .find(item => item.querySelector('.item-name').textContent === itemName);
             
             if (existingItem) {
-                // 商品已存在，增加数量
                 const quantityEl = existingItem.querySelector('.quantity');
                 quantityEl.textContent = parseInt(quantityEl.textContent) + 1;
             } else {
-                // 新商品，创建DOM元素
                 if (cartContainer.querySelector('.empty-cart')) {
-                    cartContainer.innerHTML = ''; // 清除空购物车提示
+                    cartContainer.innerHTML = '';
                 }
                 const newItem = document.createElement('div');
                 newItem.className = 'cart-item';
@@ -767,11 +760,10 @@
                 cartContainer.appendChild(newItem);
             }
             
-            // 更新金额
             updateCartTotal();
         }
 
-        // 3. 表单验证
+        // 5. 前端表单验证函数（关键：此函数仅在前端定义和使用）
         function validateOrderForm() {
             let isValid = true;
             const name = document.getElementById('name').value.trim();
@@ -786,8 +778,8 @@
                 document.getElementById('nameError').style.display = 'none';
             }
             
-            // 电话验证（10位数字，支持0开头）
-            const phoneRegex = /^09\d{8}$/; // 台湾手机号格式（09开头+8位数字）
+            // 电话验证（台湾手机号：09开头+8位数字）
+            const phoneRegex = /^09\d{8}$/;
             if (!phone || !phoneRegex.test(phone)) {
                 document.getElementById('phoneError').style.display = 'block';
                 isValid = false;
@@ -806,9 +798,9 @@
             return isValid;
         }
 
-        // 4. 提交订单到后端（核心功能）
+        // 6. 提交订单到后端
         async function submitOrder() {
-            // 表单验证
+            // 调用前端表单验证函数（此处不再依赖后端函数）
             if (!validateOrderForm()) {
                 return;
             }
@@ -823,7 +815,7 @@
             submitBtn.disabled = true;
             
             try {
-                // 1. 收集购物车商品数据
+                // 收集购物车数据
                 const cartItems = [];
                 document.querySelectorAll('.cart-item').forEach(item => {
                     cartItems.push({
@@ -833,48 +825,32 @@
                     });
                 });
                 
-                // 2. 构造订单数据（严格匹配后端所需字段）
+                // 构造订单数据
                 const orderData = {
                     name: document.getElementById('name').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
                     address: document.getElementById('address').value.trim(),
                     payment: document.getElementById('payment').value,
                     notes: document.getElementById('notes').value.trim(),
-                    order: JSON.stringify(cartItems), // 订单详情转为JSON字符串
+                    order: JSON.stringify(cartItems),
                     total: document.getElementById('totalAmount').textContent.replace('$', ''),
                     timestamp: new Date().toLocaleString('zh-TW')
                 };
                 
-                // 3. 发送POST请求（关键：使用text/plain避免预检请求）
+                // 发送订单请求
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'text/plain', // 简单请求类型，避免OPTIONS预检
-                        'Accept': 'application/json'
-                    },
                     body: JSON.stringify(orderData),
-                    cache: 'no-store', // 禁用缓存
-                    credentials: 'omit' // 不发送Cookie，避免跨域权限问题
+                    cache: 'no-store'
                 });
                 
-                // 4. 处理响应
                 if (!response.ok) {
                     throw new Error(`HTTP错误：${response.status}（${response.statusText}）`);
                 }
                 
-                // 解析响应（处理可能的格式问题）
-                const responseText = await response.text();
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                } catch (parseError) {
-                    throw new Error(`响应格式错误：${responseText}`);
-                }
-                
-                // 5. 处理业务结果
+                const result = await response.json();
                 if (result.result === 'success') {
-                    // 订单成功：显示消息+重置状态
+                    // 订单成功处理
                     document.getElementById('successText').textContent = 
                         `訂單已成功送出！訂單ID：${result.orderId}\n我們將盡快為您配送～`;
                     document.getElementById('orderSuccess').style.display = 'block';
@@ -886,16 +862,14 @@
                     document.getElementById('checkoutBtn').style.display = 'block';
                     updateCartTotal();
                     
-                    // 滚动到顶部查看消息
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
-                    // 业务错误（后端返回错误）
                     throw new Error(result.message || '订单提交失败，原因未知');
                 }
 
             } catch (error) {
-                // 捕获所有错误（网络错误、业务错误、解析错误等）
-                console.error('提交订单失败详情：', error);
+                // 错误处理
+                console.error('提交订单失败：', error);
                 document.getElementById('errorText').textContent = `訂單提交失敗：${error.message}`;
                 document.getElementById('orderError').style.display = 'block';
             } finally {
@@ -905,19 +879,17 @@
             }
         }
 
-        // 5. 绑定所有页面交互事件
+        // 7. 绑定页面交互事件
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化购物车金额
             updateCartTotal();
             
-            // 查看菜单：显示对应餐厅的菜单弹窗
+            // 查看菜单
             document.querySelectorAll('.view-menu').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const restaurantType = this.dataset.restaurant;
-                    const restaurant = restaurantMenus[restaurantType];
+                    const type = this.dataset.restaurant;
+                    const restaurant = restaurantMenus[type];
                     if (!restaurant) return;
                     
-                    // 填充菜单内容
                     document.getElementById('modalRestaurantName').textContent = restaurant.name;
                     let menuHtml = '';
                     restaurant.items.forEach(item => {
@@ -926,35 +898,28 @@
                                 <div class="menu-item-name">${item.name}</div>
                                 <div>
                                     <span class="menu-item-price">$${item.price}</span>
-                                    <button class="add-to-cart" 
-                                        data-name="${item.name}" 
-                                        data-price="${item.price}">
-                                        加入購物車
-                                    </button>
+                                    <button class="add-to-cart" data-name="${item.name}" data-price="${item.price}">加入購物車</button>
                                 </div>
                             </div>
                         `;
                     });
                     document.getElementById('modalMenuItems').innerHTML = menuHtml;
-                    
-                    // 显示弹窗
                     document.getElementById('menuModal').style.display = 'flex';
                 });
             });
             
             // 关闭菜单弹窗
-            document.querySelector('.close-modal').addEventListener('click', function() {
+            document.querySelector('.close-modal').addEventListener('click', () => {
                 document.getElementById('menuModal').style.display = 'none';
             });
-            // 点击弹窗外部关闭
-            window.addEventListener('click', function(e) {
+            window.addEventListener('click', e => {
                 if (e.target === document.getElementById('menuModal')) {
                     document.getElementById('menuModal').style.display = 'none';
                 }
             });
             
-            // 购物车操作：数量增减、删除商品（事件委托）
-            document.getElementById('cartItems').addEventListener('click', function(e) {
+            // 购物车操作
+            document.getElementById('cartItems').addEventListener('click', e => {
                 // 数量增减
                 if (e.target.classList.contains('quantity-btn')) {
                     const btn = e.target;
@@ -962,20 +927,11 @@
                     let quantity = parseInt(quantityEl.textContent);
                     const action = btn.dataset.action;
                     
-                    if (action === 'increase') {
-                        quantity++;
-                    } else if (action === 'decrease') {
-                        if (quantity > 1) {
-                            quantity--;
-                        } else {
-                            // 数量为1时点击"-"：删除商品
-                            btn.closest('.cart-item').remove();
-                        }
-                    }
+                    if (action === 'increase') quantity++;
+                    else if (action === 'decrease' && quantity > 1) quantity--;
+                    else if (action === 'decrease' && quantity === 1) btn.closest('.cart-item').remove();
                     
-                    if (quantity >= 1) {
-                        quantityEl.textContent = quantity;
-                    }
+                    if (quantity >= 1) quantityEl.textContent = quantity;
                     updateCartTotal();
                 }
                 
@@ -986,42 +942,32 @@
                 }
             });
             
-            // 菜单中点击"加入购物车"（事件委托）
-            document.getElementById('modalMenuItems').addEventListener('click', function(e) {
+            // 菜单添加购物车
+            document.getElementById('modalMenuItems').addEventListener('click', e => {
                 if (e.target.classList.contains('add-to-cart')) {
-                    const itemName = e.target.dataset.name;
-                    const itemPrice = e.target.dataset.price;
-                    addToCart(itemName, itemPrice);
+                    addToCart(e.target.dataset.name, e.target.dataset.price);
                 }
             });
             
-            // 点击"结账"：显示订单表单
+            // 结账按钮
             document.getElementById('checkoutBtn').addEventListener('click', function() {
                 this.style.display = 'none';
                 document.getElementById('orderForm').style.display = 'block';
-                // 滚动到表单位置
                 document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
             });
             
-            // 点击"提交订单"：执行提交逻辑
+            // 提交订单按钮
             document.getElementById('submitOrder').addEventListener('click', submitOrder);
             
-            // 表单输入实时验证
+            // 表单实时验证
             document.getElementById('name').addEventListener('input', function() {
-                if (this.value.trim()) {
-                    document.getElementById('nameError').style.display = 'none';
-                }
+                if (this.value.trim()) document.getElementById('nameError').style.display = 'none';
             });
             document.getElementById('phone').addEventListener('input', function() {
-                const phoneRegex = /^09\d{8}$/;
-                if (phoneRegex.test(this.value.trim())) {
-                    document.getElementById('phoneError').style.display = 'none';
-                }
+                if (/^09\d{8}$/.test(this.value.trim())) document.getElementById('phoneError').style.display = 'none';
             });
             document.getElementById('address').addEventListener('input', function() {
-                if (this.value.trim()) {
-                    document.getElementById('addressError').style.display = 'none';
-                }
+                if (this.value.trim()) document.getElementById('addressError').style.display = 'none';
             });
         });
     </script>
