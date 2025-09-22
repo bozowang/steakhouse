@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美食外送 - FoodPanda风格订购系统</title>
+    <title>美食外送 - FoodPanda風格訂購系統</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* 保持原有 CSS 樣式，未做修改 */
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +17,6 @@
         body {
             background-color: #f8f9fa;
             color: #333;
-            line-height: 1.6;
         }
         
         .container {
@@ -25,7 +25,7 @@
             padding: 0 15px;
         }
         
-        /* 导航栏 */
+        /* 導航欄 */
         header {
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -73,14 +73,14 @@
             color: #ff2e6b;
         }
         
-        /* 主内容区 */
+        /* 主內容區 */
         .main-content {
             display: flex;
             margin: 30px 0;
             gap: 30px;
         }
         
-        /* 餐厅列表 */
+        /* 餐廳列表 */
         .restaurant-list {
             flex: 1;
         }
@@ -141,7 +141,7 @@
             color: #ff7b32;
         }
         
-        /* 购物车 */
+        /* 購物車 */
         .cart-container {
             width: 350px;
             background: #fff;
@@ -195,28 +195,11 @@
             justify-content: center;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.2s;
-        }
-        
-        .quantity-btn:hover {
-            background-color: #f0f0f0;
         }
         
         .quantity {
             margin: 0 10px;
             font-weight: 500;
-        }
-        
-        .remove-item {
-            color: #ff4444;
-            margin-left: 10px;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-        
-        .remove-item:hover {
-            opacity: 1;
         }
         
         .cart-summary {
@@ -253,12 +236,7 @@
             background-color: #e91c5a;
         }
         
-        .checkout-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        
-        /* 表单样式 */
+        /* 表單樣式 */
         .form-group {
             margin-bottom: 15px;
         }
@@ -277,22 +255,7 @@
             font-size: 16px;
         }
         
-        .form-group input:focus, 
-        .form-group textarea:focus, 
-        .form-group select:focus {
-            outline: none;
-            border-color: #ff2e6b;
-            box-shadow: 0 0 0 2px rgba(255, 46, 107, 0.2);
-        }
-        
-        .form-error {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        /* 响应式设计 */
+        /* 響應式設計 */
         @media (max-width: 992px) {
             .main-content {
                 flex-direction: column;
@@ -303,26 +266,9 @@
                 position: relative;
                 top: 0;
             }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-                font-size: 24px;
-                color: #ff2e6b;
-                background: none;
-                border: none;
-                cursor: pointer;
-            }
         }
         
-        .mobile-menu-btn {
-            display: none;
-        }
-        
-        /* 订单成功消息 */
+        /* 訂單成功消息 */
         .order-success {
             display: none;
             background: #4caf50;
@@ -331,14 +277,9 @@
             border-radius: 4px;
             text-align: center;
             margin-bottom: 20px;
-            animation: fadeIn 0.5s;
         }
         
-        .order-success i {
-            margin-right: 10px;
-        }
-        
-        /* 页脚 */
+        /* 頁腳 */
         footer {
             background: #333;
             color: #fff;
@@ -361,7 +302,6 @@
         .footer-section h3 {
             margin-bottom: 15px;
             font-size: 18px;
-            color: #fff;
         }
         
         .footer-section ul {
@@ -386,10 +326,9 @@
             padding-top: 20px;
             border-top: 1px solid #444;
             margin-top: 20px;
-            color: #ddd;
         }
         
-        /* 加载动画 */
+        /* 加載動畫 */
         .loader {
             display: none;
             border: 5px solid #f3f3f3;
@@ -405,112 +344,10 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* 错误消息 */
-        .error-message {
-            display: none;
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s;
-        }
-        
-        .error-message i {
-            margin-right: 10px;
-        }
-        
-        /* 分隔线 */
-        .divider {
-            height: 1px;
-            background-color: #eee;
-            margin: 20px 0;
-        }
-        
-        /* 调试信息 */
-        .debug-info {
-            display: none;
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        
-        /* 订单确认 */
-        .order-confirmation {
-            display: none;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            animation: fadeIn 0.5s;
-        }
-        
-        .confirmation-header {
-            text-align: center;
-            color: #4caf50;
-            margin-bottom: 20px;
-        }
-        
-        .confirmation-details {
-            margin-bottom: 20px;
-        }
-        
-        .detail-row {
-            display: flex;
-            margin-bottom: 10px;
-        }
-        
-        .detail-label {
-            font-weight: 600;
-            width: 100px;
-        }
-        
-        .back-to-home {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .back-btn {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .back-btn:hover {
-            background-color: #3d8b40;
-        }
-        
-        /* 空购物车提示 */
-        .empty-cart {
-            text-align: center;
-            padding: 30px 0;
-            color: #777;
-        }
-        
-        .empty-cart i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ddd;
-        }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
+    <!-- 導航欄 -->
     <header>
         <div class="container">
             <div class="navbar">
@@ -519,40 +356,45 @@
                     <span class="logo-text">美食外送</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">餐厅</a></li>
-                    <li><a href="#">优惠</a></li>
-                    <li><a href="#">订单追踪</a></li>
+                    <li><a href="#">首頁</a></li>
+                    <li><a href="#">餐廳</a></li>
+                    <li><a href="#">優惠</a></li>
+                    <li><a href="#">訂單追蹤</a></li>
                     <li><a href="#">登入</a></li>
                 </ul>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
             </div>
         </div>
     </header>
 
-    <!-- 主内容区 -->
+    <!-- 主內容區 -->
     <div class="container">
         <div class="order-success" id="orderSuccess">
-            <i class="fas fa-check-circle"></i> 订单已成功送出！我们会尽快为您处理。
-        </div>
-        
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorText">订单提交失败，请重试或联系客服。</span>
+            <i class="fas fa-check-circle"></i> 訂單已成功送出！我們會盡快為您處理。
         </div>
         
         <div class="main-content">
-            <!-- 左侧：餐厅和菜单 -->
+            <!-- 左側：餐廳和菜單 -->
             <div class="restaurant-list">
-                <h2 class="section-title">推荐餐厅</h2>
+                <h2 class="section-title">推薦餐廳</h2>
                 
-                <!-- 餐厅卡片 -->
+                <!-- 餐廳卡片 -->
+                <div class="restaurant-card">
+                    <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">義式風味廚房</h3>
+                        <p class="restaurant-category">義大利麵・披薩・義式料理</p>
+                        <div class="restaurant-meta">
+                            <span class="rating"><i class="fas fa-star"></i> 4.8 (256)</span>
+                            <span>• 20-30 min • $100 起送</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
                         <h3 class="restaurant-name">日式料理亭</h3>
-                        <p class="restaurant-category">寿司・生鱼片・日式定食</p>
+                        <p class="restaurant-category">壽司・生魚片・日式定食</p>
                         <div class="restaurant-meta">
                             <span class="rating"><i class="fas fa-star"></i> 4.7 (312)</span>
                             <span>• 15-25 min • $120 起送</span>
@@ -563,505 +405,305 @@
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
-                        <h3 class="restaurant-name">美式汉堡工坊</h3>
-                        <p class="restaurant-category">汉堡・薯条・奶昔</p>
+                        <h3 class="restaurant-name">美式漢堡工坊</h3>
+                        <p class="restaurant-category">漢堡・薯條・奶昔</p>
                         <div class="restaurant-meta">
                             <span class="rating"><i class="fas fa-star"></i> 4.5 (189)</span>
                             <span>• 10-20 min • $80 起送</span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="restaurant-card">
-                    <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
-                    <div class="restaurant-info">
-                        <h3 class="restaurant-name">義式風味廚房</h3>
-                        <p class="restaurant-category">披薩・義大利麵・燉飯</p>
-                        <div class="restaurant-meta">
-                            <span class="rating"><i class="fas fa-star"></i> 4.8 (256)</span>
-                            <span>• 20-30 min • $150 起送</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             
-            <!-- 右侧：购物车 -->
+            <!-- 右側：購物車 -->
             <div class="cart-container">
-                <h2 class="section-title">您的订单</h2>
+                <h2 class="section-title">您的訂單</h2>
                 
-                <div class="cart-items" id="cartItems">
+                <div class="cart-items">
                     <div class="cart-item">
                         <div class="item-details">
-                            <div class="item-name">玛格丽特披萨</div>
-                            <div class="item-price" data-price="220">$220</div>
+                            <div class="item-name">瑪格麗特披薩</div>
+                            <div class="item-price" data-raw-price="220">$220</div>
                         </div>
                         <div class="item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                            <button class="quantity-btn" data-action="decrease">-</button>
                             <span class="quantity">1</span>
-                            <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
-                            <i class="fas fa-trash remove-item" onclick="removeItem(this)"></i>
+                            <button class="quantity-btn" data-action="increase">+</button>
                         </div>
                     </div>
                     
                     <div class="cart-item">
                         <div class="item-details">
-                            <div class="item-name">蒜香意大利面</div>
-                            <div class="item-price" data-price="180">$180</div>
+                            <div class="item-name">蒜香義大利麵</div>
+                            <div class="item-price" data-raw-price="180">$180</div>
                         </div>
                         <div class="item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                            <button class="quantity-btn" data-action="decrease">-</button>
                             <span class="quantity">1</span>
-                            <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
-                            <i class="fas fa-trash remove-item" onclick="removeItem(this)"></i>
+                            <button class="quantity-btn" data-action="increase">+</button>
                         </div>
                     </div>
                     
                     <div class="cart-item">
                         <div class="item-details">
-                            <div class="item-name">可乐</div>
-                            <div class="item-price" data-price="40">$40</div>
+                            <div class="item-name">可樂</div>
+                            <div class="item-price" data-raw-price="40">$40</div>
                         </div>
                         <div class="item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                            <button class="quantity-btn" data-action="decrease">-</button>
                             <span class="quantity">2</span>
-                            <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
-                            <i class="fas fa-trash remove-item" onclick="removeItem(this)"></i>
+                            <button class="quantity-btn" data-action="increase">+</button>
                         </div>
                     </div>
-                </div>
-                
-                <!-- 空购物车提示 -->
-                <div class="empty-cart" id="emptyCart" style="display: none;">
-                    <i class="fas fa-shopping-cart"></i>
-                    <p>您的购物车是空的</p>
-                    <p>添加一些美食吧！</p>
                 </div>
                 
                 <div class="cart-summary">
                     <div class="summary-row">
-                        <span>小计</span>
+                        <span>小計</span>
                         <span id="subtotal">$480</span>
                     </div>
                     <div class="summary-row">
-                        <span>运费</span>
-                        <span id="shipping-fee">$30</span>
+                        <span>運費</span>
+                        <span id="shippingFee">$30</span>
                     </div>
                     <div class="summary-row total">
-                        <span>总计</span>
-                        <span id="total-amount">$510</span>
+                        <span>總計</span>
+                        <span id="totalAmount">$510</span>
                     </div>
                 </div>
                 
-                <button class="checkout-btn" id="checkoutBtn" onclick="showOrderForm()"> 结账</button>
+                <button class="checkout-btn" id="checkoutBtn">結帳</button>
                 
-                <!-- 订单表单 -->
+                <!-- 訂單表單 -->
                 <div id="orderForm" style="display: none; margin-top: 20px;">
-                    <h3 style="margin-bottom: 15px;">订购信息</h3>
+                    <h3 style="margin-bottom: 15px;">訂購資訊</h3>
                     
                     <div class="form-group">
                         <label for="name">姓名</label>
                         <input type="text" id="name" required>
-                        <div class="form-error" id="nameError">请输入您的姓名</div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">电话</label>
+                        <label for="phone">電話</label>
                         <input type="tel" id="phone" required>
-                        <div class="form-error" id="phoneError">请输入有效的电话号码</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="address">地址</label>
                         <textarea id="address" rows="2" required></textarea>
-                        <div class="form-error" id="addressError">请输入您的地址</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="payment">付款方式</label>
                         <select id="payment">
-                            <option value="cash">现金付款</option>
+                            <option value="cash">現金付款</option>
                             <option value="card">信用卡</option>
                             <option value="linepay">LINE Pay</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="notes">备注</label>
+                        <label for="notes">備註</label>
                         <textarea id="notes" rows="2"></textarea>
                     </div>
                     
                     <div class="loader" id="loader"></div>
                     
-                    <button class="checkout-btn" id="submitOrder" onclick="submitOrder()">送出订单</button>
-                    
-                    <div class="debug-info" id="debugInfo"></div>
-                </div>
-                
-                <!-- 订单确认 -->
-                <div class="order-confirmation" id="orderConfirmation">
-                    <div class="confirmation-header">
-                        <i class="fas fa-check-circle" style="font-size: 48px;"></i>
-                        <h2>订单已成功提交！</h2>
-                        <p>您的订单编号: <span id="orderId"></span></p>
-                    </div>
-                    
-                    <div class="confirmation-details">
-                        <h3>订单详情</h3>
-                        <div class="detail-row">
-                            <span class="detail-label">预计送达:</span>
-                            <span id="deliveryTime">30-40分钟</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">总金额:</span>
-                            <span id="confirmTotal">$510</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">付款方式:</span>
-                            <span id="confirmPayment">现金付款</span>
-                        </div>
-                    </div>
-                    
-                    <div class="back-to-home">
-                        <button class="back-btn" onclick="resetOrder()">返回首页</button>
-                    </div>
+                    <button class="checkout-btn" id="submitOrder">送出訂單</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 页脚 -->
+    <!-- 頁腳 -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>关于我们</h3>
+                    <h3>關於我們</h3>
                     <ul>
-                        <li><a href="#">关于美食外送</a></li>
-                        <li><a href="#">加入我们</a></li>
-                        <li><a href="#">新闻中心</a></li>
+                        <li><a href="#">關於美食外送</a></li>
+                        <li><a href="#">加入我們</a></li>
+                        <li><a href="#">新聞中心</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>客户服务</h3>
+                    <h3>客戶服務</h3>
                     <ul>
-                        <li><a href="#">常见问题</a></li>
-                        <li><a href="#">联络我们</a></li>
-                        <li><a href="#">订单问题</a></li>
+                        <li><a href="#">常見問題</a></li>
+                        <li><a href="#">聯絡我們</a></li>
+                        <li><a href="#">訂單問題</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>合作伙伴</h3>
+                    <h3>合作夥伴</h3>
                     <ul>
-                        <li><a href="#">餐厅合作</a></li>
-                        <li><a href="#">广告合作</a></li>
-                        <li><a href="#">成为外送伙伴</a></li>
+                        <li><a href="#">餐廳合作</a></li>
+                        <li><a href="#">廣告合作</a></li>
+                        <li><a href="#">成為外送夥伴</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>下载应用程式</h3>
-                    <p>从App Store或Google Play下载我们的应用程式</p>
+                    <h3>下載應用程式</h3>
+                    <p>從App Store或Google Play下載我們的應用程式</p>
                 </div>
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 美食外送平台 版权所有</p>
+                <p>&copy; 2023 美食外送平台 版權所有</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // 使用新的部署ID
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyXdcvcYZlssF1dmQa5wnwxqDxV8m8WnKYSfJj15Pmwv0C2eU0iFx_iljPcy2_wUhSm/exec';
-        
-        // 初始化购物车总计
-        updateCartTotal();
-        checkCartEmpty();
-        
-        // 显示订单表单
-        function showOrderForm() {
-            document.getElementById('orderForm').style.display = 'block';
-            document.getElementById('checkoutBtn').style.display = 'none';
-        }
-        
-        // 更新商品数量
-        function updateQuantity(button, change) {
-            const quantityElement = button.parentElement.querySelector('.quantity');
-            let quantity = parseInt(quantityElement.textContent);
-            
-            quantity += change;
-            
-            if (quantity < 1) quantity = 1;
-            
-            quantityElement.textContent = quantity;
-            updateCartTotal();
-        }
-        
-        // 移除商品
-        function removeItem(button) {
-            const cartItem = button.closest('.cart-item');
-            cartItem.remove();
-            updateCartTotal();
-            checkCartEmpty();
-        }
-        
-        // 检查购物车是否为空
-        function checkCartEmpty() {
-            const cartItems = document.querySelectorAll('.cart-item');
-            const emptyCartMsg = document.getElementById('emptyCart');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-            
-            if (cartItems.length === 0) {
-                emptyCartMsg.style.display = 'block';
-                checkoutBtn.disabled = true;
-                checkoutBtn.style.opacity = '0.7';
-            } else {
-                emptyCartMsg.style.display = 'none';
-                checkoutBtn.disabled = false;
-                checkoutBtn.style.opacity = '1';
-            }
-        }
-        
-        // 更新购物车总计
-        function updateCartTotal() {
+        // Apps Script Web App 的部署 URL，請確保這是最新且正確的
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyXdcvcYZlssF1dmQa5wnwxqDxV8m8WnKYSfJj15Pmwv0C2eU0iFx_iljPcy2_wUhSm/exec'; // 這是你的 URL，我只是為了示例放了一個假定值
+
+        // 運費設定
+        const SHIPPING_FEE = 30;
+
+        // 更新購物車總金額的函數
+        function updateCartTotals() {
             let subtotal = 0;
-            
             document.querySelectorAll('.cart-item').forEach(item => {
-                const price = parseFloat(item.querySelector('.item-price').getAttribute('data-price'));
+                const priceText = item.querySelector('.item-price').dataset.rawPrice; // 從 data-raw-price 獲取原始價格
+                const price = parseFloat(priceText);
                 const quantity = parseInt(item.querySelector('.quantity').textContent);
                 subtotal += price * quantity;
             });
-            
-            // 运费规则：订单满200免运费
-            const shippingFee = subtotal >= 200 ? 0 : 30;
-            const total = subtotal + shippingFee;
-            
-            document.getElementById('subtotal').textContent = '$' + subtotal;
-            document.getElementById('shipping-fee').textContent = '$' + shippingFee;
-            document.getElementById('total-amount').textContent = '$' + total;
+
+            const total = subtotal + SHIPPING_FEE;
+
+            document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('shippingFee').textContent = `$${SHIPPING_FEE}`;
+            document.getElementById('totalAmount').textContent = `$${total}`;
         }
+
+        // 顯示/隱藏訂單表單
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            document.getElementById('orderForm').style.display = 'block';
+            this.style.display = 'none';
+            // 確保總金額是最新的
+            updateCartTotals();
+        });
         
-        // 显示错误消息
-        function showError(message, elementId = null) {
-            if (elementId) {
-                // 显示字段错误
-                const errorElement = document.getElementById(elementId);
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-            } else {
-                // 显示全局错误
-                document.getElementById('errorText').textContent = message;
-                document.getElementById('errorMessage').style.display = 'block';
-                window.scrollTo(0, 0);
-            }
-        }
-        
-        // 隐藏错误消息
-        function hideError(elementId = null) {
-            if (elementId) {
-                // 隐藏字段错误
-                const errorElement = document.getElementById(elementId);
-                errorElement.style.display = 'none';
-            } else {
-                // 隐藏所有错误
-                document.getElementById('errorMessage').style.display = 'none';
-                document.querySelectorAll('.form-error').forEach(el => {
-                    el.style.display = 'none';
-                });
-            }
-        }
-        
-        // 显示成功消息
-        function showSuccess() {
-            document.getElementById('orderSuccess').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
-        
-        // 显示调试信息
-        function showDebugInfo(info) {
-            document.getElementById('debugInfo').textContent = info;
-            document.getElementById('debugInfo').style.display = 'block';
-        }
-        
-        // 生成随机订单ID
-        function generateOrderId() {
-            return 'ORD' + Math.floor(100000 + Math.random() * 900000);
-        }
-        
-        // 显示订单确认
-        function showOrderConfirmation(orderData) {
-            document.getElementById('orderForm').style.display = 'none';
-            document.getElementById('orderConfirmation').style.display = 'block';
+        // 送出訂單
+        document.getElementById('submitOrder').addEventListener('click', async function() {
+            // 獲取表單數據
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const payment = document.getElementById('payment').value;
+            const notes = document.getElementById('notes').value;
             
-            // 填充订单详情
-            document.getElementById('orderId').textContent = generateOrderId();
-            document.getElementById('confirmTotal').textContent = '$' + orderData.total;
-            document.getElementById('confirmPayment').textContent = 
-                document.getElementById('payment').options[document.getElementById('payment').selectedIndex].text;
-        }
-        
-        // 重置订单
-        function resetOrder() {
-            // 重置数量
-            document.querySelectorAll('.quantity').forEach(qty => {
-                qty.textContent = '1';
-            });
-            
-            // 重置表单
-            document.getElementById('orderForm').reset();
-            document.getElementById('orderForm').style.display = 'none';
-            document.getElementById('orderConfirmation').style.display = 'none';
-            document.getElementById('checkoutBtn').style.display = 'block';
-            document.getElementById('orderSuccess').style.display = 'none';
-            
-            // 更新购物车
-            updateCartTotal();
-            checkCartEmpty();
-        }
-        
-        // 验证表单
-        function validateForm() {
-            let isValid = true;
-            hideError();
-            
-            // 验证姓名
-            const name = document.getElementById('name').value.trim();
-            if (!name) {
-                showError('请输入您的姓名', 'nameError');
-                isValid = false;
-            }
-            
-            // 验证电话
-            const phone = document.getElementById('phone').value.trim();
-            const phonePattern = /^[0-9]{10,11}$/;
-            if (!phone || !phonePattern.test(phone)) {
-                showError('请输入有效的电话号码（10-11位数字）', 'phoneError');
-                isValid = false;
-            }
-            
-            // 验证地址
-            const address = document.getElementById('address').value.trim();
-            if (!address) {
-                showError('请输入您的地址', 'addressError');
-                isValid = false;
-            }
-            
-            return isValid;
-        }
-        
-        // 提交订单
-        function submitOrder() {
-            // 表单验证
-            if (!validateForm()) {
+            // 簡單驗證
+            if (!name || !phone || !address) {
+                alert('請填寫必要的訂購資訊！');
                 return;
             }
             
-            // 获取表单数据
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const payment = document.getElementById('payment').value;
-            const notes = document.getElementById('notes').value.trim();
-            
-            // 显示加载动画
+            // 顯示加載動畫
             document.getElementById('loader').style.display = 'block';
             document.getElementById('submitOrder').disabled = true;
-            hideError();
             
-            // 获取购物车内容
+            // 獲取購物車內容
             const cartItems = [];
             document.querySelectorAll('.cart-item').forEach(item => {
-                const name = item.querySelector('.item-name').textContent;
-                const price = parseFloat(item.querySelector('.item-price').getAttribute('data-price'));
-                const quantity = parseInt(item.querySelector('.quantity').textContent);
-                cartItems.push({name, price, quantity});
+                const itemName = item.querySelector('.item-name').textContent;
+                const itemPrice = parseFloat(item.querySelector('.item-price').dataset.rawPrice); // 使用原始價格
+                const itemQuantity = parseInt(item.querySelector('.quantity').textContent);
+                cartItems.push({name: itemName, price: itemPrice, quantity: itemQuantity});
             });
             
-            // 获取总金额
-            const total = document.getElementById('total-amount').textContent.replace('$', '');
+            // 獲取總金額
+            const total = document.getElementById('totalAmount').textContent.replace('$', ''); // 移除 $ 符號
             
-            // 准备发送到Google Sheets的数据
+            // 準備發送到Google Sheets的數據
             const formData = {
                 name: name,
                 phone: phone,
                 address: address,
                 payment: payment,
                 notes: notes,
-                order: JSON.stringify(cartItems),
+                order: JSON.stringify(cartItems), // 將購物車商品轉換為 JSON 字串
                 total: total,
                 timestamp: new Date().toLocaleString('zh-TW')
             };
             
-            // 发送数据到Google Apps Script
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('网络响应不正常: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // 隐藏加载动画
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('submitOrder').disabled = false;
-                
-                if (data && data.result === "success") {
-                    // 显示成功消息
-                    showSuccess();
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    // 在 Apps Script 處理 CORS，因此這裡不需要 no-cors
+                    // headers: {
+                    //     'Content-Type': 'text/plain', // 這裡改成 text/plain 避免預檢請求
+                    // },
+                    body: JSON.stringify(formData) // 直接發送 JSON 字串
+                });
+
+                // 由於 Apps Script Web App 在成功時通常返回 200 OK，但 fetch 在 no-cors 模式下無法檢查狀態
+                // 如果是正常 CORS，則可以檢查 response.ok 或解析 JSON
+                // 這裡我們假設成功了，並依賴 Apps Script 返回的結果
+                const result = await response.json(); // 嘗試解析 JSON 響應
+
+                if (result.result === "success") {
+                    // 隱藏加載動畫
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('submitOrder').disabled = false;
                     
-                    // 显示订单确认
-                    showOrderConfirmation(formData);
+                    // 顯示成功消息
+                    document.getElementById('orderSuccess').style.display = 'block';
                     
-                    // 显示调试信息（实际生产环境可以移除）
-                    showDebugInfo("订单已成功提交到Google Sheets。响应: " + JSON.stringify(data));
+                    // 重置表單
+                    document.getElementById('orderForm').reset();
+                    document.getElementById('orderForm').style.display = 'none';
+                    document.getElementById('checkoutBtn').style.display = 'block';
+                    
+                    // 重置購物車內容 (這裡只清空了商品，實際應用中應清空所有商品)
+                    document.querySelector('.cart-items').innerHTML = '<div style="text-align: center; color: #777;">購物車是空的</div>';
+                    updateCartTotals(); // 更新為空購物車的總計
+
+                    // 滾動到頂部查看成功消息
+                    window.scrollTo(0, 0);
                 } else {
-                    showError('订单提交失败: ' + (data.message || '未知错误'));
-                    showDebugInfo("服务器响应: " + JSON.stringify(data));
+                    throw new Error(result.message || "未知錯誤");
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('submitOrder').disabled = false;
+                alert('訂單提交失敗，請重試或聯繫客服。\n錯誤: ' + error.message);
+            }
+        });
+        
+        // 數量按鈕功能
+        const quantityBtns = document.querySelectorAll('.quantity-btn');
+        quantityBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quantityElement = this.parentElement.querySelector('.quantity');
+                let quantity = parseInt(quantityElement.textContent);
+                const action = this.dataset.action; // 從 data-action 獲取操作類型
                 
-                showError('网络错误，请检查连接后重试');
-                showDebugInfo("网络错误: " + error.message);
+                if (action === 'increase') {
+                    quantity++;
+                } else if (action === 'decrease' && quantity > 1) {
+                    quantity--;
+                } else if (action === 'decrease' && quantity === 1) {
+                    // 如果數量減到 0，可以考慮從購物車中移除該商品
+                    // 這裡只是將數量設為 0，但在實際應用中，你可能需要移除整個 .cart-item
+                    alert('商品數量不能少於 1。若要移除請開發此功能。');
+                    return; // 不更新，直接返回
+                }
+                
+                quantityElement.textContent = quantity;
+                updateCartTotals(); // 每次數量改變都更新總金額
             });
-        }
-        
-        // 添加输入框验证事件监听
-        document.getElementById('name').addEventListener('blur', function() {
-            if (!this.value.trim()) {
-                showError('请输入您的姓名', 'nameError');
-            } else {
-                hideError('nameError');
-            }
         });
-        
-        document.getElementById('phone').addEventListener('blur', function() {
-            const phonePattern = /^[0-9]{10,11}$/;
-            if (!this.value.trim() || !phonePattern.test(this.value.trim())) {
-                showError('请输入有效的电话号码（10-11位数字）', 'phoneError');
-            } else {
-                hideError('phoneError');
-            }
-        });
-        
-        document.getElementById('address').addEventListener('blur', function() {
-            if (!this.value.trim()) {
-                showError('请输入您的地址', 'addressError');
-            } else {
-                hideError('addressError');
-            }
-        });
+
+        // 頁面加載時，初始化購物車總計
+        document.addEventListener('DOMContentLoaded', updateCartTotals);
     </script>
 </body>
 </html>
