@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美食外送 - Food Delivery</title>
+    <title>美食外送 - FoodPanda風格訂購系統</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -16,7 +17,6 @@
         body {
             background-color: #f8f9fa;
             color: #333;
-            line-height: 1.6;
         }
         
         .container {
@@ -139,37 +139,6 @@
         
         .rating {
             color: #ff7b32;
-        }
-        
-        /* 菜單項目 */
-        .menu-items {
-            margin-top: 15px;
-        }
-        
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
-        }
-        
-        .menu-item-name {
-            font-weight: 500;
-        }
-        
-        .menu-item-price {
-            color: #ff2e6b;
-        }
-        
-        .add-to-cart {
-            background-color: #ff2e6b;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-left: 10px;
         }
         
         /* 購物車 */
@@ -310,7 +279,6 @@
             margin-bottom: 20px;
         }
         
-        /* 錯誤消息 */
         .order-error {
             display: none;
             background: #f44336;
@@ -386,75 +354,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* 錯誤提示 */
-        .error-message {
-            color: #ff2e6b;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .empty-cart {
-            text-align: center;
-            color: #777;
-            padding: 20px 0;
-        }
-        
-        .remove-item {
-            color: #ff2e6b;
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* 菜單按鈕 */
-        .view-menu {
-            margin-top: 10px;
-            background: none;
-            border: 1px solid #ff2e6b;
-            color: #ff2e6b;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .view-menu:hover {
-            background-color: #ff2e6b;
-            color: white;
-        }
-
-        /* 彈窗樣式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            float: right;
-            font-size: 24px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -480,7 +379,7 @@
     <!-- 主內容區 -->
     <div class="container">
         <div class="order-success" id="orderSuccess">
-            <i class="fas fa-check-circle"></i> 訂單已成功送出！我們會盡快為您處理。
+            <i class="fas fa-check-circle"></i> <span id="successMessage">訂單已成功送出！我們會盡快為您處理。</span>
         </div>
         
         <div class="order-error" id="orderError">
@@ -492,7 +391,7 @@
             <div class="restaurant-list">
                 <h2 class="section-title">推薦餐廳</h2>
                 
-                <!-- 餐廳卡片 1 -->
+                <!-- 餐廳卡片 -->
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
@@ -502,13 +401,9 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.8 (256)</span>
                             <span>• 20-30 min • $100 起送</span>
                         </div>
-                        <button class="view-menu" data-restaurant="italian">查看菜單</button>
-                        
-                        <!-- 菜單將通過JavaScript動態顯示 -->
                     </div>
                 </div>
                 
-                <!-- 餐廳卡片 2 -->
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
@@ -518,11 +413,9 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.7 (312)</span>
                             <span>• 15-25 min • $120 起送</span>
                         </div>
-                        <button class="view-menu" data-restaurant="japanese">查看菜單</button>
                     </div>
                 </div>
                 
-                <!-- 餐廳卡片 3 -->
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
@@ -532,7 +425,6 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.5 (189)</span>
                             <span>• 10-20 min • $80 起送</span>
                         </div>
-                        <button class="view-menu" data-restaurant="american">查看菜單</button>
                     </div>
                 </div>
             </div>
@@ -541,14 +433,48 @@
             <div class="cart-container">
                 <h2 class="section-title">您的訂單</h2>
                 
-                <div class="cart-items" id="cartItems">
-                    <div class="empty-cart">購物車是空的</div>
+                <div class="cart-items">
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-name">瑪格麗特披薩</div>
+                            <div class="item-price" data-raw-price="220">$220</div>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" data-action="decrease">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-name">蒜香義大利麵</div>
+                            <div class="item-price" data-raw-price="180">$180</div>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" data-action="decrease">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-name">可樂</div>
+                            <div class="item-price" data-raw-price="40">$40</div>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" data-action="decrease">-</button>
+                            <span class="quantity">2</span>
+                            <button class="quantity-btn" data-action="increase">+</button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="cart-summary">
                     <div class="summary-row">
                         <span>小計</span>
-                        <span id="subtotal">$0</span>
+                        <span id="subtotal">$480</span>
                     </div>
                     <div class="summary-row">
                         <span>運費</span>
@@ -556,32 +482,29 @@
                     </div>
                     <div class="summary-row total">
                         <span>總計</span>
-                        <span id="totalAmount">$30</span>
+                        <span id="totalAmount">$510</span>
                     </div>
                 </div>
                 
-                <button class="checkout-btn" id="checkoutBtn" disabled>結帳</button>
+                <button class="checkout-btn" id="checkoutBtn">結帳</button>
                 
                 <!-- 訂單表單 -->
                 <div id="orderForm" style="display: none; margin-top: 20px;">
                     <h3 style="margin-bottom: 15px;">訂購資訊</h3>
                     
                     <div class="form-group">
-                        <label for="name">姓名 <span style="color: red;">*</span></label>
+                        <label for="name">姓名</label>
                         <input type="text" id="name" required>
-                        <div class="error-message" id="nameError">請輸入姓名</div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">電話 <span style="color: red;">*</span></label>
+                        <label for="phone">電話</label>
                         <input type="tel" id="phone" required>
-                        <div class="error-message" id="phoneError">請輸入有效的電話號碼</div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="address">地址 <span style="color: red;">*</span></label>
+                        <label for="address">地址</label>
                         <textarea id="address" rows="2" required></textarea>
-                        <div class="error-message" id="addressError">請輸入送貨地址</div>
                     </div>
                     
                     <div class="form-group">
@@ -603,15 +526,6 @@
                     <button class="checkout-btn" id="submitOrder">送出訂單</button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- 菜單彈窗 -->
-    <div class="modal" id="menuModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 id="modalRestaurantName"></h2>
-            <div id="modalMenuItems"></div>
         </div>
     </div>
 
@@ -659,151 +573,72 @@
     </footer>
 
     <script>
-        // 替換為您自己的Google Apps Script部署URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbympt1wYT8jTRY6YlOJ0qnHAyRluihIna2j9gv5NnCz8iyWi2BTP5EUHo7fv6ZgttmR/exec';
+        // 替換為你最新部署的 Google Apps Script Web App URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwjVepKCy352hKmKgzYkNKY8rWylarbhWEAivRjtFmLHbL88H3HRiSuDC5w10IEnQI/exec';
 
         // 運費設定
         const SHIPPING_FEE = 30;
 
-        // 菜單數據
-        const menus = {
-            italian: {
-                name: "義式風味廚房",
-                items: [
-                    { name: "瑪格麗特披薩", price: 220 },
-                    { name: "臘腸披薩", price: 260 },
-                    { name: "蒜香義大利麵", price: 180 },
-                    { name: "海鮮義大利麵", price: 220 },
-                    { name: "凱撒沙拉", price: 100 },
-                    { name: "提拉米蘇", price: 80 }
-                ]
-            },
-            japanese: {
-                name: "日式料理亭",
-                items: [
-                    { name: "精緻壽司組合", price: 380 },
-                    { name: "刺身定食", price: 320 },
-                    { name: "拉麵", price: 180 },
-                    { name: "天婦羅", price: 160 },
-                    { name: "味增湯", price: 50 },
-                    { name: "綠茶冰淇淋", price: 60 }
-                ]
-            },
-            american: {
-                name: "美式漢堡工坊",
-                items: [
-                    { name: "經典牛肉漢堡", price: 160 },
-                    { name: "培根起司漢堡", price: 180 },
-                    { name: "薯條", price: 80 },
-                    { name: "雞塊", price: 100 },
-                    { name: "可樂", price: 40 },
-                    { name: "奶昔", price: 70 }
-                ]
-            }
-        };
-
         // 更新購物車總金額的函數
         function updateCartTotals() {
             let subtotal = 0;
-            const cartItems = document.querySelectorAll('.cart-item');
-            
-            // 如果購物車為空
-            if (cartItems.length === 0) {
-                document.getElementById('cartItems').innerHTML = '<div class="empty-cart">購物車是空的</div>';
-                document.getElementById('checkoutBtn').disabled = true;
-                document.getElementById('checkoutBtn').style.opacity = '0.7';
-                subtotal = 0;
-            } else {
-                document.getElementById('checkoutBtn').disabled = false;
-                document.getElementById('checkoutBtn').style.opacity = '1';
-                
-                cartItems.forEach(item => {
-                    const priceText = item.querySelector('.item-price').dataset.rawPrice;
-                    const price = parseFloat(priceText);
-                    const quantity = parseInt(item.querySelector('.quantity').textContent);
-                    subtotal += price * quantity;
-                });
-            }
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const priceText = item.querySelector('.item-price').dataset.rawPrice;
+                const price = parseFloat(priceText);
+                const quantity = parseInt(item.querySelector('.quantity').textContent);
+                subtotal += price * quantity;
+            });
 
-            const total = subtotal + (cartItems.length > 0 ? SHIPPING_FEE : 0);
+            const total = subtotal + SHIPPING_FEE;
 
             document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('shippingFee').textContent = `$${SHIPPING_FEE}`;
             document.getElementById('totalAmount').textContent = `$${total}`;
-            
-            return total;
-        }
-
-        // 表單驗證
-        function validateForm() {
-            let isValid = true;
-            
-            // 姓名驗證
-            const name = document.getElementById('name').value.trim();
-            if (!name) {
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('nameError').style.display = 'none';
-            }
-            
-            // 電話驗證
-            const phone = document.getElementById('phone').value.trim();
-            const phonePattern = /^[0-9]{9,10}$/;
-            if (!phone || !phonePattern.test(phone)) {
-                document.getElementById('phoneError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
-            }
-            
-            // 地址驗證
-            const address = document.getElementById('address').value.trim();
-            if (!address) {
-                document.getElementById('addressError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('addressError').style.display = 'none';
-            }
-            
-            return isValid;
         }
 
         // 顯示/隱藏訂單表單
         document.getElementById('checkoutBtn').addEventListener('click', function() {
-            // 檢查購物車是否為空
-            const cartItems = document.querySelectorAll('.cart-item');
-            if (cartItems.length === 0) {
-                alert('購物車是空的，請先添加商品！');
-                return;
-            }
-            
             document.getElementById('orderForm').style.display = 'block';
             this.style.display = 'none';
             // 確保總金額是最新的
             updateCartTotals();
         });
         
-        // 送出訂單
-        document.getElementById('submitOrder').addEventListener('click', async function() {
-            // 驗證表單
-            if (!validateForm()) {
-                return;
-            }
-            
-            // 隱藏之前的消息
+        // 顯示消息
+        function showMessage(elementId, message) {
+            // 隱藏所有消息
             document.getElementById('orderSuccess').style.display = 'none';
             document.getElementById('orderError').style.display = 'none';
             
+            // 顯示指定消息
+            const messageElement = document.getElementById(elementId);
+            document.querySelector(`#${elementId} span`).textContent = message;
+            messageElement.style.display = 'block';
+            
+            // 5秒後自動隱藏
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+        
+        // 送出訂單
+        document.getElementById('submitOrder').addEventListener('click', async function() {
             // 獲取表單數據
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
-            const notes = document.getElementById('notes').value.trim();
+            const notes = document.getElementById('notes').value;
+            
+            // 簡單驗證
+            if (!name || !phone || !address) {
+                alert('請填寫必要的訂購資訊！');
+                return;
+            }
             
             // 顯示加載動畫
             document.getElementById('loader').style.display = 'block';
-            document.getElementById('submitOrder').disabled = true;
+            this.disabled = true;
             
             // 獲取購物車內容
             const cartItems = [];
@@ -830,206 +665,81 @@
             };
             
             try {
-                // 設置CORS和請求選項
+                // 使用適合Google Apps Script的fetch配置
                 const response = await fetch(scriptURL, {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'text/plain', // 避免預檢請求
                     },
-                    body: JSON.stringify(formData),
-                    cache: 'no-store'
+                    body: JSON.stringify(formData)
                 });
 
+                // 檢查HTTP響應狀態
                 if (!response.ok) {
                     throw new Error(`HTTP錯誤: ${response.status}`);
                 }
 
                 const result = await response.json();
-
+                
                 if (result.result === "success") {
-                    // 隱藏加載動畫
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('submitOrder').disabled = false;
+                    // 顯示成功消息，包含訂單編號
+                    showMessage('orderSuccess', `訂單已成功送出！訂單編號: ${result.orderId}，我們會盡快為您處理。`);
                     
-                    // 顯示成功消息
-                    document.getElementById('orderSuccess').style.display = 'block';
-                    
-                    // 重置表單
+                    // 重置表單和購物車
                     document.getElementById('orderForm').reset();
                     document.getElementById('orderForm').style.display = 'none';
                     document.getElementById('checkoutBtn').style.display = 'block';
                     
                     // 清空購物車
-                    document.getElementById('cartItems').innerHTML = '<div class="empty-cart">購物車是空的</div>';
+                    document.querySelector('.cart-items').innerHTML = '<div style="text-align: center; color: #777;">購物車是空的</div>';
                     updateCartTotals();
                     
                     // 滾動到頂部查看成功消息
                     window.scrollTo(0, 0);
-                    
-                    // 5秒後隱藏成功消息
-                    setTimeout(() => {
-                        document.getElementById('orderSuccess').style.display = 'none';
-                    }, 5000);
                 } else {
-                    throw new Error(result.message || "未知錯誤");
+                    throw new Error(result.message || "提交失敗，未知錯誤");
                 }
             } catch (error) {
                 console.error('Error:', error);
+                showMessage('orderError', `訂單提交失敗: ${error.message}`);
+            } finally {
+                // 無論成功失敗都關閉加載動畫
                 document.getElementById('loader').style.display = 'none';
-                document.getElementById('submitOrder').disabled = false;
-                
-                // 顯示錯誤消息
-                document.getElementById('errorMessage').textContent = `訂單提交失敗: ${error.message}`;
-                document.getElementById('orderError').style.display = 'block';
-                
-                // 5秒後隱藏錯誤消息
-                setTimeout(() => {
-                    document.getElementById('orderError').style.display = 'none';
-                }, 5000);
+                this.disabled = false;
             }
         });
         
         // 數量按鈕功能
-        document.addEventListener('click', function(e) {
-            // 處理數量增減
-            if (e.target.classList.contains('quantity-btn')) {
-                const quantityElement = e.target.parentElement.querySelector('.quantity');
+        const quantityBtns = document.querySelectorAll('.quantity-btn');
+        quantityBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quantityElement = this.parentElement.querySelector('.quantity');
                 let quantity = parseInt(quantityElement.textContent);
-                const action = e.target.dataset.action;
+                const action = this.dataset.action;
                 
                 if (action === 'increase') {
                     quantity++;
                 } else if (action === 'decrease' && quantity > 1) {
                     quantity--;
+                } else if (action === 'decrease' && quantity === 1) {
+                    // 移除商品的功能
+                    if (confirm('確定要從購物車中移除這個商品嗎？')) {
+                        this.closest('.cart-item').remove();
+                        updateCartTotals();
+                        return;
+                    } else {
+                        return;
+                    }
                 }
                 
                 quantityElement.textContent = quantity;
                 updateCartTotals();
-            }
-            
-            // 處理刪除商品
-            if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
-                const removeBtn = e.target.classList.contains('remove-item') ? e.target : e.target.closest('.remove-item');
-                const cartItem = removeBtn.closest('.cart-item');
-                cartItem.remove();
-                updateCartTotals();
-            }
-            
-            // 查看菜單按鈕
-            if (e.target.classList.contains('view-menu')) {
-                const restaurantType = e.target.dataset.restaurant;
-                const restaurant = menus[restaurantType];
-                
-                if (restaurant) {
-                    document.getElementById('modalRestaurantName').textContent = restaurant.name;
-                    
-                    // 生成菜單項目
-                    let menuHtml = '';
-                    restaurant.items.forEach(item => {
-                        menuHtml += `
-                            <div class="menu-item">
-                                <div class="menu-item-name">${item.name}</div>
-                                <div>
-                                    <span class="menu-item-price">$${item.price}</span>
-                                    <button class="add-to-cart" data-name="${item.name}" data-price="${item.price}">
-                                        加入購物車
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    
-                    document.getElementById('modalMenuItems').innerHTML = menuHtml;
-                    document.getElementById('menuModal').style.display = 'flex';
-                }
-            }
-            
-            // 關閉菜單彈窗
-            if (e.target.classList.contains('close-modal') || e.target.classList.contains('modal')) {
-                document.getElementById('menuModal').style.display = 'none';
-            }
-            
-            // 添加到購物車
-            if (e.target.classList.contains('add-to-cart')) {
-                const itemName = e.target.dataset.name;
-                const itemPrice = e.target.dataset.price;
-                
-                // 檢查商品是否已在購物車中
-                const cartItems = document.getElementById('cartItems');
-                let existingItem = null;
-                
-                // 如果購物車是空的提示，先清除
-                if (cartItems.querySelector('.empty-cart')) {
-                    cartItems.innerHTML = '';
-                } else {
-                    // 檢查是否已有相同商品
-                    existingItem = Array.from(cartItems.querySelectorAll('.cart-item')).find(item => 
-                        item.querySelector('.item-name').textContent === itemName
-                    );
-                }
-                
-                if (existingItem) {
-                    // 增加已有商品數量
-                    const quantityElement = existingItem.querySelector('.quantity');
-                    let quantity = parseInt(quantityElement.textContent);
-                    quantityElement.textContent = quantity + 1;
-                } else {
-                    // 添加新商品
-                    const newItem = document.createElement('div');
-                    newItem.className = 'cart-item';
-                    newItem.innerHTML = `
-                        <div class="item-details">
-                            <div class="item-name">${itemName}</div>
-                            <div class="item-price" data-raw-price="${itemPrice}">$${itemPrice}</div>
-                        </div>
-                        <div class="item-quantity">
-                            <button class="quantity-btn" data-action="decrease">-</button>
-                            <span class="quantity">1</span>
-                            <button class="quantity-btn" data-action="increase">+</button>
-                            <button class="remove-item"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `;
-                    cartItems.appendChild(newItem);
-                }
-                
-                updateCartTotals();
-            }
+            });
         });
 
-        // 頁面加載時，初始化購物車總計
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartTotals();
-            
-            // 添加表單輸入監聽，實時驗證
-            document.getElementById('name').addEventListener('input', function() {
-                if (this.value.trim()) {
-                    document.getElementById('nameError').style.display = 'none';
-                }
-            });
-            
-            document.getElementById('phone').addEventListener('input', function() {
-                const phonePattern = /^[0-9]{9,10}$/;
-                if (phonePattern.test(this.value.trim())) {
-                    document.getElementById('phoneError').style.display = 'none';
-                }
-            });
-            
-            document.getElementById('address').addEventListener('input', function() {
-                if (this.value.trim()) {
-                    document.getElementById('addressError').style.display = 'none';
-                }
-            });
-
-            // 點擊彈窗外區域關閉彈窗
-            window.onclick = function(event) {
-                const modal = document.getElementById('menuModal');
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            }
-        });
+        // 頁面加載時初始化
+        document.addEventListener('DOMContentLoaded', updateCartTotals);
     </script>
 </body>
 </html>
