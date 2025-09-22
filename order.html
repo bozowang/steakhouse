@@ -592,31 +592,34 @@
 
     <script>
         // Google Apps Script Web App URL
+        // IMPORTANT: Replace this with YOUR DEPLOYED Google Apps Script Web App URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbw3Fxb5VwWU9JDq5VXaAJhCn4p0ekhocPPK11UcOdO8tVO7bHZxKyzgIRzs8uG7NBMq/exec';
         
-        // 初始化购物车总计
-        updateCartTotal();
+        // Initialize cart total on page load
+        document.addEventListener('DOMContentLoaded', updateCartTotal);
         
-        // 显示订单表单
+        // Show the order form
         function showOrderForm() {
             document.getElementById('orderForm').style.display = 'block';
             document.getElementById('checkoutBtn').style.display = 'none';
+            hideError(); // Hide any previous error messages when showing the form
+            document.getElementById('orderSuccess').style.display = 'none'; // Hide success message if visible
         }
         
-        // 更新商品数量
+        // Update item quantity in the cart
         function updateQuantity(button, change) {
             const quantityElement = button.parentElement.querySelector('.quantity');
             let quantity = parseInt(quantityElement.textContent);
             
             quantity += change;
             
-            if (quantity < 1) quantity = 1;
+            if (quantity < 1) quantity = 1; // Ensure quantity doesn't go below 1
             
             quantityElement.textContent = quantity;
-            updateCartTotal();
+            updateCartTotal(); // Recalculate total after quantity change
         }
         
-        // 更新购物车总计
+        // Update the cart summary (subtotal, shipping, total)
         function updateCartTotal() {
             let subtotal = 0;
             
@@ -626,7 +629,7 @@
                 subtotal += price * quantity;
             });
             
-            const shippingFee = 30;
+            const shippingFee = 30; // Fixed shipping fee
             const total = subtotal + shippingFee;
             
             document.getElementById('subtotal').textContent = '$' + subtotal;
@@ -634,125 +637,143 @@
             document.getElementById('total-amount').textContent = '$' + total;
         }
         
-        // 显示错误消息
+        // Display an error message
         function showError(message) {
             document.getElementById('errorText').textContent = message;
             document.getElementById('errorMessage').style.display = 'block';
-            window.scrollTo(0, 0);
+            document.getElementById('orderSuccess').style.display = 'none'; // Hide success if error occurs
+            window.scrollTo(0, 0); // Scroll to top to make message visible
         }
         
-        // 隐藏错误消息
+        // Hide the error message
         function hideError() {
             document.getElementById('errorMessage').style.display = 'none';
         }
         
-        // 显示成功消息
+        // Display a success message
         function showSuccess() {
             document.getElementById('orderSuccess').style.display = 'block';
-            window.scrollTo(0, 0);
+            document.getElementById('errorMessage').style.display = 'none'; // Hide error if success occurs
+            window.scrollTo(0, 0); // Scroll to top to make message visible
         }
         
-        // 显示调试信息
+        // Display debug information (useful for troubleshooting)
         function showDebugInfo(info) {
             document.getElementById('debugInfo').textContent = info;
             document.getElementById('debugInfo').style.display = 'block';
         }
         
-        // 提交订单
+        // Submit the order to Google Apps Script
         function submitOrder() {
-            // 获取表单数据
+            // Get form data
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
             const notes = document.getElementById('notes').value;
             
-            // 简单验证
+            // Simple client-side validation
             if (!name || !phone || !address) {
-                showError('请填写必要的订购信息！');
+                showError('请填写必要的订购信息 (姓名、电话、地址)！');
                 return;
             }
             
-            // 显示加载动画
+            // Show loading animation and disable button
             document.getElementById('loader').style.display = 'block';
             document.getElementById('submitOrder').disabled = true;
-            hideError();
+            hideError(); // Clear any previous errors
+            document.getElementById('orderSuccess').style.display = 'none'; // Clear any previous success
+            document.getElementById('debugInfo').style.display = 'none'; // Clear previous debug info
             
-            // 获取购物车内容
+            // Get cart contents
             const cartItems = [];
             document.querySelectorAll('.cart-item').forEach(item => {
-                const name = item.querySelector('.item-name').textContent;
-                const price = item.querySelector('.item-price').getAttribute('data-price');
-                const quantity = item.querySelector('.quantity').textContent;
-                cartItems.push({name, price, quantity});
+                const itemName = item.querySelector('.item-name').textContent;
+                const itemPrice = item.querySelector('.item-price').getAttribute('data-price');
+                const itemQuantity = item.querySelector('.quantity').textContent;
+                cartItems.push({name: itemName, price: itemPrice, quantity: itemQuantity});
             });
             
-            // 获取总金额
+            // Get total amount
             const total = document.getElementById('total-amount').textContent.replace('$', '');
             
-            // 准备发送到Google Sheets的数据
-            const formData = {
+            // Prepare data to send as JSON string
+            const payload = {
                 name: name,
                 phone: phone,
                 address: address,
                 payment: payment,
                 notes: notes,
-                order: JSON.stringify(cartItems),
+                order: JSON.stringify(cartItems), // Stringify cartItems array for the script
                 total: total,
-                timestamp: new Date().toLocaleString('zh-TW')
+                timestamp: new Date().toLocaleString('zh-TW') // Formatted timestamp
             };
             
-            // 创建表单数据（Google Apps Script更易处理）
-            const formDataForSubmit = new FormData();
-            for (const key in formData) {
-                formDataForSubmit.append(key, formData[key]);
-            }
-            
-            // 发送数据到Google Apps Script
+            // Send data to Google Apps Script using fetch with JSON payload
             fetch(scriptURL, {
                 method: 'POST',
-                body: formDataForSubmit
+                headers: {
+                    'Content-Type': 'application/json' // Crucial: tell the server we're sending JSON
+                },
+                body: JSON.stringify(payload) // Convert the payload object to a JSON string
             })
             .then(response => {
-                // 即使响应不是JSON，也尝试处理
+                // Always try to read the response as text first, then attempt JSON parsing
                 return response.text().then(text => {
-                    try {
-                        return JSON.parse(text);
-                    } catch {
-                        return {result: "success", message: "Order received"};
+                    if (response.ok) { // Check if HTTP status is 2xx
+                        try {
+                            return JSON.parse(text);
+                        } catch (e) {
+                            // If it's not valid JSON, but the status was OK, assume success.
+                            // This can happen with simple `ContentService.createTextOutput("")`
+                            console.warn("Received non-JSON but OK response:", text);
+                            return { result: "success", message: "Order received (non-JSON response)" };
+                        }
+                    } else {
+                        // If HTTP status is an error, try to parse JSON error or return generic error
+                        try {
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error("Received non-JSON error response:", text);
+                            return { result: "error", message: `Server error: ${response.status} ${text.substring(0, 100)}...` };
+                        }
                     }
                 });
             })
             .then(data => {
-                // 隐藏加载动画
+                // Hide loading animation and re-enable button
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('submitOrder').disabled = false;
                 
                 if (data && data.result === "success") {
-                    // 显示成功消息
-                    showSuccess();
+                    showSuccess(); // Display success message
                     
-                    // 重置表单
-                    document.getElementById('orderForm').reset();
+                    // Reset form fields
+                    document.getElementById('name').value = '';
+                    document.getElementById('phone').value = '';
+                    document.getElementById('address').value = '';
+                    document.getElementById('payment').value = 'cash';
+                    document.getElementById('notes').value = '';
+
+                    // Hide the form and show the checkout button again
                     document.getElementById('orderForm').style.display = 'none';
                     document.getElementById('checkoutBtn').style.display = 'block';
                     
-                    // 显示调试信息
+                    // Display debug info
                     showDebugInfo("订单已成功提交到Google Sheets。响应: " + JSON.stringify(data));
                 } else {
-                    // 即使没有明确的成功响应，也假设订单已提交
-                    showSuccess();
-                    showDebugInfo("订单可能已提交，但响应异常: " + JSON.stringify(data));
+                    // Display specific error message if available, otherwise generic
+                    showError(data.message || '订单提交失败，请重试或联系客服。');
+                    showDebugInfo("订单提交失败。响应: " + JSON.stringify(data));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Fetch Error:', error);
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('submitOrder').disabled = false;
                 
-                // 即使出现错误，也假设订单已提交（Google Apps Script常见问题）
-                showSuccess();
-                showDebugInfo("订单可能已提交，但出现网络错误: " + error.message);
+                showError('网络请求失败，请检查您的网络连接或稍后重试。');
+                showDebugInfo("网络请求失败: " + error.message);
             });
         }
     </script>
