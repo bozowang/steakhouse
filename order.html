@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美食外送 - FoodPanda風格訂購系統</title>
+    <title>美食外送 - Food Delivery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: #f8f9fa;
             color: #333;
+            line-height: 1.6;
         }
         
         .container {
@@ -24,7 +25,6 @@
             padding: 0 15px;
         }
         
-        /* 導航欄 */
         header {
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -72,14 +72,12 @@
             color: #ff2e6b;
         }
         
-        /* 主內容區 */
         .main-content {
             display: flex;
             margin: 30px 0;
             gap: 30px;
         }
         
-        /* 餐廳列表 */
         .restaurant-list {
             flex: 1;
         }
@@ -99,7 +97,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             transition: transform 0.3s;
-            cursor: pointer;
         }
         
         .restaurant-card:hover {
@@ -140,7 +137,41 @@
             color: #ff7b32;
         }
         
-        /* 購物車 */
+        .menu-items {
+            margin-top: 15px;
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .menu-item-name {
+            font-weight: 500;
+        }
+        
+        .menu-item-price {
+            color: #ff2e6b;
+        }
+        
+        .add-to-cart {
+            background-color: #ff2e6b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #e91c5a;
+        }
+        
         .cart-container {
             width: 350px;
             background: #fff;
@@ -194,11 +225,18 @@
             justify-content: center;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #f0f0f0;
         }
         
         .quantity {
             margin: 0 10px;
             font-weight: 500;
+            min-width: 20px;
+            text-align: center;
         }
         
         .cart-summary {
@@ -231,16 +269,15 @@
             margin-top: 15px;
         }
         
-        .checkout-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        
         .checkout-btn:hover:not(:disabled) {
             background-color: #e91c5a;
         }
         
-        /* 表單樣式 */
+        .checkout-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
         .form-group {
             margin-bottom: 15px;
         }
@@ -257,17 +294,14 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
+            transition: border-color 0.3s;
         }
         
-        /* 錯誤提示（新增） */
-        .form-error {
-            color: #ff2e6b;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #ff2e6b;
+            outline: none;
         }
         
-        /* 響應式設計 */
         @media (max-width: 992px) {
             .main-content {
                 flex-direction: column;
@@ -280,33 +314,26 @@
             }
         }
         
-        /* 訂單消息（成功/錯誤，新增動畫） */
-        .order-message {
+        .order-success {
             display: none;
+            background: #4caf50;
+            color: white;
             padding: 15px;
             border-radius: 4px;
             text-align: center;
             margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .order-success {
-            background: #4caf50;
-            color: white;
         }
         
         .order-error {
+            display: none;
             background: #f44336;
             color: white;
-            display: none; /* 默认隐藏 */
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         
-        /* 頁腳 */
         footer {
             background: #333;
             color: #fff;
@@ -355,7 +382,6 @@
             margin-top: 20px;
         }
         
-        /* 加載動畫 */
         .loader {
             display: none;
             border: 5px solid #f3f3f3;
@@ -371,17 +397,123 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* 空购物车提示（新增） */
+        
+        .error-message {
+            color: #ff2e6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
         .empty-cart {
             text-align: center;
             color: #777;
             padding: 20px 0;
         }
+        
+        .remove-item {
+            color: #ff2e6b;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: color 0.3s;
+        }
+
+        .remove-item:hover {
+            color: #e91c5a;
+        }
+
+        .view-menu {
+            margin-top: 10px;
+            background: none;
+            border: 1px solid #ff2e6b;
+            color: #ff2e6b;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-menu:hover {
+            background-color: #ff2e6b;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #ff2e6b;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .input-error {
+            border-color: #ff2e6b !important;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #218838;
+        }
+
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .cancel-btn {
+            background-color: #6c757d;
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
-    <!-- 導航欄 -->
     <header>
         <div class="container">
             <div class="navbar">
@@ -400,22 +532,19 @@
         </div>
     </header>
 
-    <!-- 主內容區 -->
     <div class="container">
-        <!-- 订单消息提示（成功/错误） -->
-        <div class="order-message order-success" id="orderSuccess">
-            <i class="fas fa-check-circle"></i> <span id="successContent">訂單已成功送出！我們會盡快為您處理。</span>
+        <div class="order-success fade-in" id="orderSuccess">
+            <i class="fas fa-check-circle"></i> <span id="successMessage">訂單已成功送出！我們會盡快為您處理。</span>
         </div>
-        <div class="order-message order-error" id="orderError">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorContent">訂單提交失敗，請稍後再試。</span>
+        
+        <div class="order-error fade-in" id="orderError">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorMessage">訂單提交失敗，請稍後再試。</span>
         </div>
         
         <div class="main-content">
-            <!-- 左側：餐廳和菜單 -->
             <div class="restaurant-list">
                 <h2 class="section-title">推薦餐廳</h2>
                 
-                <!-- 餐廳卡片 -->
                 <div class="restaurant-card">
                     <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60')"></div>
                     <div class="restaurant-info">
@@ -425,6 +554,7 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.8 (256)</span>
                             <span>• 20-30 min • $100 起送</span>
                         </div>
+                        <button class="view-menu" data-restaurant="italian">查看菜單</button>
                     </div>
                 </div>
                 
@@ -437,6 +567,7 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.7 (312)</span>
                             <span>• 15-25 min • $120 起送</span>
                         </div>
+                        <button class="view-menu" data-restaurant="japanese">查看菜單</button>
                     </div>
                 </div>
                 
@@ -449,56 +580,22 @@
                             <span class="rating"><i class="fas fa-star"></i> 4.5 (189)</span>
                             <span>• 10-20 min • $80 起送</span>
                         </div>
+                        <button class="view-menu" data-restaurant="american">查看菜單</button>
                     </div>
                 </div>
             </div>
             
-            <!-- 右側：購物車 -->
             <div class="cart-container">
                 <h2 class="section-title">您的訂單</h2>
                 
                 <div class="cart-items" id="cartItems">
-                    <div class="cart-item">
-                        <div class="item-details">
-                            <div class="item-name">瑪格麗特披薩</div>
-                            <div class="item-price" data-raw-price="220">$220</div>
-                        </div>
-                        <div class="item-quantity">
-                            <button class="quantity-btn" data-action="decrease">-</button>
-                            <span class="quantity">1</span>
-                            <button class="quantity-btn" data-action="increase">+</button>
-                        </div>
-                    </div>
-                    
-                    <div class="cart-item">
-                        <div class="item-details">
-                            <div class="item-name">蒜香義大利麵</div>
-                            <div class="item-price" data-raw-price="180">$180</div>
-                        </div>
-                        <div class="item-quantity">
-                            <button class="quantity-btn" data-action="decrease">-</button>
-                            <span class="quantity">1</span>
-                            <button class="quantity-btn" data-action="increase">+</button>
-                        </div>
-                    </div>
-                    
-                    <div class="cart-item">
-                        <div class="item-details">
-                            <div class="item-name">可樂</div>
-                            <div class="item-price" data-raw-price="40">$40</div>
-                        </div>
-                        <div class="item-quantity">
-                            <button class="quantity-btn" data-action="decrease">-</button>
-                            <span class="quantity">2</span>
-                            <button class="quantity-btn" data-action="increase">+</button>
-                        </div>
-                    </div>
+                    <div class="empty-cart">購物車是空的</div>
                 </div>
                 
                 <div class="cart-summary">
                     <div class="summary-row">
                         <span>小計</span>
-                        <span id="subtotal">$480</span>
+                        <span id="subtotal">$0</span>
                     </div>
                     <div class="summary-row">
                         <span>運費</span>
@@ -506,32 +603,31 @@
                     </div>
                     <div class="summary-row total">
                         <span>總計</span>
-                        <span id="totalAmount">$510</span>
+                        <span id="totalAmount">$30</span>
                     </div>
                 </div>
                 
-                <button class="checkout-btn" id="checkoutBtn">結帳</button>
+                <button class="checkout-btn" id="checkoutBtn" disabled>結帳</button>
                 
-                <!-- 訂單表單 -->
                 <div id="orderForm" style="display: none; margin-top: 20px;">
                     <h3 style="margin-bottom: 15px;">訂購資訊</h3>
                     
                     <div class="form-group">
                         <label for="name">姓名 <span style="color: red;">*</span></label>
-                        <input type="text" id="name" required>
-                        <div class="form-error" id="nameError">請輸入姓名</div>
+                        <input type="text" id="name" placeholder="請輸入您的姓名" required>
+                        <div class="error-message" id="nameError">請輸入姓名</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">電話 <span style="color: red;">*</span></label>
-                        <input type="tel" id="phone" required placeholder="例如：0912345678">
-                        <div class="form-error" id="phoneError">請輸入有效的10位手機號碼</div>
+                        <input type="tel" id="phone" placeholder="請輸入您的電話號碼" required>
+                        <div class="error-message" id="phoneError">請輸入有效的電話號碼（9-10位數字）</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="address">地址 <span style="color: red;">*</span></label>
-                        <textarea id="address" rows="2" required></textarea>
-                        <div class="form-error" id="addressError">請輸入送貨地址</div>
+                        <textarea id="address" rows="2" placeholder="請輸入送貨地址" required></textarea>
+                        <div class="error-message" id="addressError">請輸入送貨地址</div>
                     </div>
                     
                     <div class="form-group">
@@ -545,18 +641,30 @@
                     
                     <div class="form-group">
                         <label for="notes">備註</label>
-                        <textarea id="notes" rows="2"></textarea>
+                        <textarea id="notes" rows="2" placeholder="如有特殊需求請在此備註"></textarea>
                     </div>
                     
                     <div class="loader" id="loader"></div>
                     
-                    <button class="checkout-btn" id="submitOrder">送出訂單</button>
+                    <button class="checkout-btn submit-btn" id="submitOrder">
+                        <i class="fas fa-paper-plane"></i> 送出訂單
+                    </button>
+                    <button class="checkout-btn cancel-btn" id="cancelOrder" type="button" style="margin-top: 10px;">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 頁腳 -->
+    <div class="modal" id="menuModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalRestaurantName"></h2>
+            <div id="modalMenuItems"></div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -600,218 +708,389 @@
     </footer>
 
     <script>
-        // 替换为你最新部署的18版后端URL（关键！）
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxunlY5veQTpTMAbhhZXr0XsWZVuxtHfDkBeCFTAqxPrhAOi_Xfleu2Uf5XNlH-L5bL/exec';
-
-        // 運費設定
+        // 使用新的部署 URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwGH__rtYyBQlpg6Si-YhsjrWepUI9OrYd_9-FK6seApqEj0y0v9SCuL6NO0YbitQ8/exec';
         const SHIPPING_FEE = 30;
 
-        // 1. 更新購物車總金額
-        function updateCartTotals() {
-            let subtotal = 0;
-            const cartItems = document.querySelectorAll('.cart-item');
-            
-            // 计算小计
-            cartItems.forEach(item => {
-                const price = parseFloat(item.querySelector('.item-price').dataset.rawPrice);
-                const quantity = parseInt(item.querySelector('.quantity').textContent);
-                subtotal += price * quantity;
-            });
-
-            const total = subtotal + SHIPPING_FEE;
-
-            // 更新页面显示
-            document.getElementById('subtotal').textContent = `$${subtotal}`;
-            document.getElementById('shippingFee').textContent = `$${SHIPPING_FEE}`;
-            document.getElementById('totalAmount').textContent = `$${total}`;
-            
-            // 空购物车时禁用结账按钮（新增）
-            document.getElementById('checkoutBtn').disabled = cartItems.length === 0;
-            if (cartItems.length === 0) {
-                document.getElementById('cartItems').innerHTML = '<div class="empty-cart">購物車是空的</div>';
+        // 菜單數據
+        const menus = {
+            italian: {
+                name: "義式風味廚房",
+                items: [
+                    { name: "瑪格麗特披薩", price: 220 },
+                    { name: "臘腸披薩", price: 260 },
+                    { name: "蒜香義大利麵", price: 180 },
+                    { name: "海鮮義大利麵", price: 220 },
+                    { name: "凱撒沙拉", price: 100 },
+                    { name: "提拉米蘇", price: 80 }
+                ]
+            },
+            japanese: {
+                name: "日式料理亭",
+                items: [
+                    { name: "精緻壽司組合", price: 380 },
+                    { name: "刺身定食", price: 320 },
+                    { name: "拉麵", price: 180 },
+                    { name: "天婦羅", price: 160 },
+                    { name: "味增湯", price: 50 },
+                    { name: "綠茶冰淇淋", price: 60 }
+                ]
+            },
+            american: {
+                name: "美式漢堡工坊",
+                items: [
+                    { name: "經典牛肉漢堡", price: 160 },
+                    { name: "培根起司漢堡", price: 180 },
+                    { name: "薯條", price: 80 },
+                    { name: "雞塊", price: 100 },
+                    { name: "可樂", price: 40 },
+                    { name: "奶昔", price: 70 }
+                ]
             }
+        };
+
+        // 購物車數據
+        let cart = [];
+
+        // 更新購物車顯示
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">購物車是空的</div>';
+                checkoutBtn.disabled = true;
+            } else {
+                cartItems.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price" data-raw-price="${item.price}">$${item.price}</div>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" data-action="decrease" data-index="${index}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn" data-action="increase" data-index="${index}">+</button>
+                            <button class="remove-item" data-index="${index}" title="刪除商品"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                checkoutBtn.disabled = false;
+            }
+            updateCartTotals();
         }
 
-        // 2. 表单验证（新增实时验证）
+        // 更新總金額
+        function updateCartTotals() {
+            let subtotal = 0;
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+            });
+
+            const total = cart.length > 0 ? subtotal + SHIPPING_FEE : 0;
+
+            document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('totalAmount').textContent = `$${total}`;
+            
+            return total;
+        }
+
+        // 表單驗證
         function validateForm() {
             let isValid = true;
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
             
-            // 姓名验证
+            // 重置錯誤狀態
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('.input-error').forEach(el => {
+                el.classList.remove('input-error');
+            });
+            
+            // 驗證姓名
+            const name = document.getElementById('name').value.trim();
             if (!name) {
                 document.getElementById('nameError').style.display = 'block';
+                document.getElementById('name').classList.add('input-error');
                 isValid = false;
-            } else {
-                document.getElementById('nameError').style.display = 'none';
             }
             
-            // 电话验证（10位数字，09开头）
-            const phoneRegex = /^09\d{8}$/;
-            if (!phone || !phoneRegex.test(phone)) {
+            // 驗證電話
+            const phone = document.getElementById('phone').value.trim();
+            const phonePattern = /^[0-9]{9,10}$/;
+            if (!phone || !phonePattern.test(phone)) {
                 document.getElementById('phoneError').style.display = 'block';
+                document.getElementById('phone').classList.add('input-error');
                 isValid = false;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
             }
             
-            // 地址验证
+            // 驗證地址
+            const address = document.getElementById('address').value.trim();
             if (!address) {
                 document.getElementById('addressError').style.display = 'block';
+                document.getElementById('address').classList.add('input-error');
                 isValid = false;
-            } else {
-                document.getElementById('addressError').style.display = 'none';
             }
             
             return isValid;
         }
 
-        // 3. 显示/隱藏訂單表單
-        document.getElementById('checkoutBtn').addEventListener('click', function() {
-            document.getElementById('orderForm').style.display = 'block';
-            this.style.display = 'none';
-            updateCartTotals(); // 确保总金额最新
-            // 滚动到表单位置（新增）
-            document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-        });
-        
-        // 4. 送出訂單（核心优化：适配后端标准响应）
-        document.getElementById('submitOrder').addEventListener('click', async function() {
-            // 先执行表单验证
-            if (!validateForm()) {
-                return;
-            }
-            
-            // 隐藏之前的消息
-            document.getElementById('orderSuccess').style.display = 'none';
-            document.getElementById('orderError').style.display = 'none';
-            
-            // 显示加载动画+禁用按钮
-            document.getElementById('loader').style.display = 'block';
-            const submitBtn = document.getElementById('submitOrder');
-            submitBtn.disabled = true;
-            
-            try {
-                // 收集购物车数据
-                const cartItems = [];
-                document.querySelectorAll('.cart-item').forEach(item => {
-                    cartItems.push({
-                        name: item.querySelector('.item-name').textContent,
-                        price: parseFloat(item.querySelector('.item-price').dataset.rawPrice),
-                        quantity: parseInt(item.querySelector('.quantity').textContent)
-                    });
-                });
+        // 顯示錯誤消息
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('orderError').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('orderError').style.display = 'none';
+            }, 5000);
+        }
+
+        // 顯示成功消息
+        function showSuccess(message) {
+            document.getElementById('successMessage').textContent = message;
+            document.getElementById('orderSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('orderSuccess').style.display = 'none';
+            }, 5000);
+        }
+
+        // 初始化事件監聽
+        function initEventListeners() {
+            // 結帳按鈕
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showError('購物車是空的，請先添加商品！');
+                    return;
+                }
+                document.getElementById('orderForm').style.display = 'block';
+                this.style.display = 'none';
+            });
+
+            // 取消按鈕
+            document.getElementById('cancelOrder').addEventListener('click', function() {
+                document.getElementById('orderForm').style.display = 'none';
+                document.getElementById('checkoutBtn').style.display = 'block';
+                document.getElementById('orderForm').reset();
                 
-                // 构造订单数据（严格匹配后端所需字段）
+                // 重置錯誤狀態
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.input-error').forEach(el => {
+                    el.classList.remove('input-error');
+                });
+            });
+
+            // 送出訂單按鈕
+            document.getElementById('submitOrder').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                console.log('開始提交訂單...');
+                
+                if (!validateForm()) {
+                    console.log('表單驗證失敗');
+                    return;
+                }
+                
+                console.log('表單驗證成功');
+                
+                // 隱藏之前的消息
+                document.getElementById('orderSuccess').style.display = 'none';
+                document.getElementById('orderError').style.display = 'none';
+                
+                // 獲取表單數據
+                const name = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const payment = document.getElementById('payment').value;
+                const notes = document.getElementById('notes').value.trim();
+                const total = document.getElementById('totalAmount').textContent.replace('$', '');
+                
+                // 顯示加載動畫
+                document.getElementById('loader').style.display = 'block';
+                this.disabled = true;
+                
+                // 準備發送的數據
                 const formData = {
-                    name: document.getElementById('name').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    address: document.getElementById('address').value.trim(),
-                    payment: document.getElementById('payment').value,
-                    notes: document.getElementById('notes').value.trim(),
-                    order: JSON.stringify(cartItems), // 订单详情转JSON
-                    total: document.getElementById('totalAmount').textContent.replace('$', ''),
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    payment: payment,
+                    notes: notes,
+                    order: JSON.stringify(cart),
+                    total: total,
                     timestamp: new Date().toLocaleString('zh-TW')
                 };
                 
-                // 发送请求（适配后端跨域+标准响应）
-                const response = await fetch(scriptURL, {
+                console.log('發送數據到:', scriptURL);
+                console.log('數據內容:', formData);
+                
+                // 發送請求到Google Apps Script
+                fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'cors', // 明确启用跨域
                     headers: {
-                        'Content-Type': 'application/json', // 告诉后端数据格式
-                        'Accept': 'application/json' // 明确期望JSON响应
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData),
-                    cache: 'no-store' // 禁用缓存
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    console.log('收到響應狀態:', response.status);
+                    return response.json();
+                })
+                .then(result => {
+                    console.log('API響應結果:', result);
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('submitOrder').disabled = false;
+                    
+                    if (result.result === "success") {
+                        showSuccess(`訂單已成功送出！訂單編號: ${result.orderId}`);
+                        
+                        // 重置表單和購物車
+                        document.getElementById('orderForm').reset();
+                        document.getElementById('orderForm').style.display = 'none';
+                        document.getElementById('checkoutBtn').style.display = 'block';
+                        
+                        cart = [];
+                        updateCartDisplay();
+                        
+                        window.scrollTo(0, 0);
+                    } else {
+                        throw new Error(result.message || "伺服器返回錯誤");
+                    }
+                })
+                .catch(error => {
+                    console.error('請求錯誤:', error);
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('submitOrder').disabled = false;
+                    showError(`訂單提交失敗: ${error.message}`);
                 });
-                
-                // 第一步：检查HTTP状态码
-                if (!response.ok) {
-                    throw new Error(`服务器响应错误：${response.status}（${response.statusText}）`);
-                }
-                
-                // 第二步：解析JSON响应（后端已保证格式正确）
-                const result = await response.json();
-                
-                // 第三步：根据后端result字段判断业务结果
-                if (result.result === "success") {
-                    // 订单成功：显示带订单ID的提示
-                    document.getElementById('successContent').textContent = 
-                        `訂單提交成功！訂單ID：${result.orderId}（可凭此ID查询进度），我们会尽快配送～`;
-                    document.getElementById('orderSuccess').style.display = 'block';
-                    
-                    // 重置表单和购物车
-                    document.getElementById('orderForm').reset();
-                    document.getElementById('orderForm').style.display = 'none';
-                    document.getElementById('checkoutBtn').style.display = 'block';
-                    document.getElementById('cartItems').innerHTML = '<div class="empty-cart">購物車是空的</div>';
-                    updateCartTotals();
-                    
-                    // 滚动到顶部查看成功消息
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    // 后端返回业务错误（如缺少字段）
-                    throw new Error(result.message || "订单提交失败，原因未知");
-                }
-
-            } catch (error) {
-                // 捕获所有错误（网络、解析、业务）
-                console.error('订单提交失败详情：', error);
-                document.getElementById('errorContent').textContent = `訂單提交失敗：${error.message}`;
-                document.getElementById('orderError').style.display = 'block';
-            } finally {
-                // 恢复页面状态
-                document.getElementById('loader').style.display = 'none';
-                submitBtn.disabled = false;
-            }
-        });
-        
-        // 5. 數量按鈕功能（优化逻辑）
-        document.querySelectorAll('.quantity-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const quantityEl = this.parentElement.querySelector('.quantity');
-                let quantity = parseInt(quantityEl.textContent);
-                const action = this.dataset.action;
-                
-                if (action === 'increase') {
-                    quantity++;
-                } else if (action === 'decrease' && quantity > 1) {
-                    quantity--;
-                } else if (action === 'decrease' && quantity === 1) {
-                    // 数量为1时点击"-"：删除该商品（新增）
-                    this.closest('.cart-item').remove();
-                }
-                
-                if (quantity >= 1) {
-                    quantityEl.textContent = quantity;
-                }
-                
-                updateCartTotals(); // 更新金额
             });
-        });
 
-        // 6. 表单实时验证（新增，提升用户体验）
-        document.getElementById('name').addEventListener('input', function() {
-            if (this.value.trim()) {
-                document.getElementById('nameError').style.display = 'none';
-            }
-        });
-        document.getElementById('phone').addEventListener('input', function() {
-            const phoneRegex = /^09\d{8}$/;
-            if (phoneRegex.test(this.value.trim())) {
-                document.getElementById('phoneError').style.display = 'none';
-            }
-        });
-        document.getElementById('address').addEventListener('input', function() {
-            if (this.value.trim()) {
-                document.getElementById('addressError').style.display = 'none';
-            }
-        });
+            // 查看菜單按鈕
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-menu')) {
+                    const restaurantType = e.target.dataset.restaurant;
+                    const restaurant = menus[restaurantType];
+                    
+                    if (restaurant) {
+                        document.getElementById('modalRestaurantName').textContent = restaurant.name;
+                        
+                        let menuHtml = '';
+                        restaurant.items.forEach(item => {
+                            menuHtml += `
+                                <div class="menu-item">
+                                    <div class="menu-item-name">${item.name}</div>
+                                    <div>
+                                        <span class="menu-item-price">$${item.price}</span>
+                                        <button class="add-to-cart" data-name="${item.name}" data-price="${item.price}">
+                                            <i class="fas fa-cart-plus"></i> 加入購物車
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        document.getElementById('modalMenuItems').innerHTML = menuHtml;
+                        document.getElementById('menuModal').style.display = 'flex';
+                    }
+                }
+                
+                // 添加到購物車
+                if (e.target.classList.contains('add-to-cart')) {
+                    const itemName = e.target.dataset.name;
+                    const itemPrice = parseFloat(e.target.dataset.price);
+                    
+                    // 檢查是否已存在於購物車
+                    const existingItemIndex = cart.findIndex(item => item.name === itemName);
+                    
+                    if (existingItemIndex !== -1) {
+                        cart[existingItemIndex].quantity++;
+                    } else {
+                        cart.push({
+                            name: itemName,
+                            price: itemPrice,
+                            quantity: 1
+                        });
+                    }
+                    
+                    updateCartDisplay();
+                    document.getElementById('menuModal').style.display = 'none';
+                    
+                    // 顯示添加成功提示
+                    showSuccess(`已將 ${itemName} 加入購物車`);
+                }
+                
+                // 數量調整和刪除
+                if (e.target.classList.contains('quantity-btn') || e.target.classList.contains('remove-item')) {
+                    const button = e.target.closest('.quantity-btn') || e.target.closest('.remove-item');
+                    if (!button) return;
+                    
+                    const index = parseInt(button.dataset.index);
+                    const action = button.dataset.action;
+                    
+                    if (action === 'increase') {
+                        cart[index].quantity++;
+                    } else if (action === 'decrease') {
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                    } else if (button.classList.contains('remove-item')) {
+                        cart.splice(index, 1);
+                    }
+                    
+                    updateCartDisplay();
+                }
+                
+                // 關閉彈窗
+                if (e.target.classList.contains('close-modal') || e.target.classList.contains('modal')) {
+                    document.getElementById('menuModal').style.display = 'none';
+                }
+            });
+
+            // 表單實時驗證
+            document.getElementById('name').addEventListener('input', function() {
+                if (this.value.trim()) {
+                    document.getElementById('nameError').style.display = 'none';
+                    this.classList.remove('input-error');
+                }
+            });
+            
+            document.getElementById('phone').addEventListener('input', function() {
+                const phonePattern = /^[0-9]{9,10}$/;
+                if (phonePattern.test(this.value.trim())) {
+                    document.getElementById('phoneError').style.display = 'none';
+                    this.classList.remove('input-error');
+                }
+            });
+            
+            document.getElementById('address').addEventListener('input', function() {
+                if (this.value.trim()) {
+                    document.getElementById('addressError').style.display = 'none';
+                    this.classList.remove('input-error');
+                }
+            });
+
+            // 點擊彈窗外區域關閉彈窗
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('menuModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
 
         // 頁面加載時初始化
-        document.addEventListener('DOMContentLoaded', updateCartTotals);
+        document.addEventListener('DOMContentLoaded', function() {
+            initEventListeners();
+            updateCartDisplay();
+            console.log('美食外送系統初始化完成');
+            console.log('API URL:', scriptURL);
+        });
     </script>
 </body>
 </html>
